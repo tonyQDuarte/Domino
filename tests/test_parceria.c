@@ -468,6 +468,11 @@ static int slide_blocks_timer_and_clicks(void)
 static RectF hand_slot(int k)
 {
     RectF r[HAND_SIZE];
+    if (k >= 24) { /* pecas-de-fora: as 4 últimas vão para o canto */
+        RectF z[SLEEPING_COUNT];
+        layout_sleeping(z);
+        return z[k - 24];
+    }
     Seat s = (Seat)(k % 4);
     if (s == SEAT_SOUTH)
         layout_south_hand(HAND_SIZE, r);
@@ -570,7 +575,7 @@ static int deal_shows_arrived_only(void)
         for (int s = 0; s < SEAT_COUNT; s++) {
             int arrived = 0;
             for (int k = 0; k < TILE_COUNT; k++)
-                if (k % 4 == s && DEAL_STEP_MS * k + DEAL_FLIGHT_MS <= t)
+                if (k < 24 && k % 4 == s && DEAL_STEP_MS * k + DEAL_FLIGHT_MS <= t)
                     arrived++;
             if (v.hand_shown[s] != arrived) {
                 fprintf(stderr, "t=%d s=%d mostrado=%d esperado=%d\n", t, s, v.hand_shown[s], arrived);
@@ -604,9 +609,11 @@ static int deal_blocks_play(void)
     CHECK(c.game.board.count == 1);
 
     dealing(&c, south_seed);
+    /* pecas-de-fora: o Sul abre com a maior carroça da mão dele, que é a maior distribuída */
     int six = -1;
     for (int i = 0; i < c.game.hands[SEAT_SOUTH].count; i++)
-        if (c.game.hands[SEAT_SOUTH].tiles[i].a == 6 && c.game.hands[SEAT_SOUTH].tiles[i].b == 6)
+        if (c.game.hands[SEAT_SOUTH].tiles[i].a == c.game.hands[SEAT_SOUTH].tiles[i].b &&
+            (six < 0 || c.game.hands[SEAT_SOUTH].tiles[i].a > c.game.hands[SEAT_SOUTH].tiles[six].a))
             six = i;
     CHECK(six >= 0);
     ctl_update(&c, 1000);

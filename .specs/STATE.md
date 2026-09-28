@@ -14,9 +14,9 @@
 ## Handoff
 
 **Feature**: pecas-de-fora
-**Where**: plan aprovado (standard), checks escritos; construindo
+**Where**: C1-C11 fechados; aguardando o Verifier
 **In progress**: nada
-**Next step**: testes de C1-C11, depois implementação
+**Next step**: Verifier independente (standard)
 **Blockers**: nenhum
 **Uncommitted**: nada
 **Branch**: feat/pecas-de-fora

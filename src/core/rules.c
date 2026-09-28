@@ -38,7 +38,7 @@ static Seat holder_of(const Game *g, int a, int b)
         for (int i = 0; i < g->hands[s].count; i++)
             if (g->hands[s].tiles[i].a == a && g->hands[s].tiles[i].b == b)
                 return (Seat)s;
-    return SEAT_SOUTH;
+    return SEAT_COUNT;
 }
 
 static void start_hand(Game *g)
@@ -60,8 +60,19 @@ static void start_hand(Game *g)
             g->hands[s].tiles[i] = set[s * HAND_SIZE + i];
         sort_hand(&g->hands[s]);
     }
+    for (int i = 0; i < SLEEPING_COUNT; i++)
+        g->sleeping[i] = set[SEAT_COUNT * HAND_SIZE + i];
     memset(&g->board, 0, sizeof g->board);
-    g->turn = g->first_hand ? holder_of(g, 6, 6) : game_choose_opener(g, g->next_opener);
+    if (g->first_hand) {
+        /* abre a maior carroça distribuída: o [6|6] pode ter ficado de fora */
+        int d = 6;
+        while (d > 0 && holder_of(g, d, d) == SEAT_COUNT)
+            d--;
+        g->opening_double = (uint8_t)d;
+        g->turn = holder_of(g, d, d);
+    } else {
+        g->turn = game_choose_opener(g, g->next_opener);
+    }
     g->opener = g->turn;
     g->passes = 0;
     g->phase = PHASE_PLAYING;
@@ -113,7 +124,8 @@ void game_fits(const Game *g, Tile t, bool *left, bool *right)
 {
     const Board *b = &g->board;
     if (b->count == 0) {
-        *left = g->first_hand ? (t.a == 6 && t.b == 6) : tile_is_double(t);
+        *left = g->first_hand ? (t.a == g->opening_double && t.b == g->opening_double)
+                              : tile_is_double(t);
         *right = false;
         return;
     }

@@ -61,6 +61,8 @@ typedef struct {
     float flip_scale;   /* escala horizontal das peças das CPUs na virada */
     bool overlay_visible;
     float pulse;        /* opacidade dos destaques */
+    int sleeping_shown; /* peças de fora já no canto */
+    bool sleeping_face_up;
 } View;
 
 void ctl_init(Controller *c, uint64_t seed);

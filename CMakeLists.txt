@@ -108,3 +108,16 @@ foreach(t
   add_test(NAME ${t} COMMAND test_carroca ${t})
   set_tests_properties(${t} PROPERTIES LABELS abertura-carroca)
 endforeach()
+
+# pecas-de-fora
+add_executable(test_fora tests/test_fora.c)
+target_link_libraries(test_fora PRIVATE domino_core)
+
+foreach(t
+    deal_6_each_4_out sleeping_corner_face_down cpu_ignores_sleeping
+    deal_sends_four_to_corner deal_corner_shows_arrived_only
+    first_hand_highest_double south_first_open_invalid
+    reveal_flips_sleeping sleeping_face_up_without_animation sleeping_shown_with_overlay)
+  add_test(NAME ${t} COMMAND test_fora ${t})
+  set_tests_properties(${t} PROPERTIES LABELS pecas-de-fora)
+endforeach()

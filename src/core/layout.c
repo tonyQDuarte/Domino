@@ -138,3 +138,11 @@ void layout_cpu_row(Seat s, int count, RectF out[HAND_SIZE])
 }
 
 RectF layout_new_match_button(void) { return (RectF){540, 430, 200, 50}; }
+
+void layout_sleeping(RectF out[SLEEPING_COUNT])
+{
+    const float w = 30, h = 60, gap = 6;
+    float x0 = SCREEN_W - 40 - (SLEEPING_COUNT * (w + gap) - gap);
+    for (int i = 0; i < SLEEPING_COUNT; i++)
+        out[i] = (RectF){x0 + i * (w + gap), 40, w, h};
+}

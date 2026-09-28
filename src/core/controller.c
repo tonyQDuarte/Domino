@@ -242,15 +242,22 @@ static RectF lerp_rect(RectF a, RectF b, float p)
 static void view_deal(const Controller *c, View *v)
 {
     RectF t = layout_table_area();
+    const int dealt = SEAT_COUNT * HAND_SIZE; /* as 24 primeiras vão para as mãos, o resto para o canto */
+    RectF corner[SLEEPING_COUNT];
+    layout_sleeping(corner);
     for (int s = 0; s < SEAT_COUNT; s++)
         v->hand_shown[s] = 0;
+    v->sleeping_shown = 0;
     for (int k = 0; k < TILE_COUNT; k++) {
         double start = DEAL_STEP_MS * k;
         Seat s = (Seat)(k % SEAT_COUNT);
         if (c->anim_ms >= start + DEAL_FLIGHT_MS) {
-            v->hand_shown[s]++;
+            if (k < dealt)
+                v->hand_shown[s]++;
+            else
+                v->sleeping_shown++;
         } else if (c->anim_ms >= start) {
-            RectF to = hand_rect(s, HAND_SIZE, k / SEAT_COUNT);
+            RectF to = k < dealt ? hand_rect(s, HAND_SIZE, k / SEAT_COUNT) : corner[k - dealt];
             /* sai pequena do centro da mesa e cresce até o tamanho da mão */
             float w = to.w * 0.4f, h = to.h * 0.4f;
             RectF from = {t.x + t.w / 2 - w / 2, t.y + t.h / 2 - h / 2, w, h};
@@ -300,6 +307,8 @@ void ctl_view(const Controller *c, View *v)
         v->hand_shown[s] = g->hands[s].count;
         v->face_up[s] = s == SEAT_SOUTH || (g->phase != PHASE_PLAYING && !hidden_reveal);
     }
+    v->sleeping_shown = SLEEPING_COUNT;
+    v->sleeping_face_up = g->phase != PHASE_PLAYING && !hidden_reveal;
     if (g->phase == PHASE_PLAYING && c->choosing)
         v->highlight_end[END_LEFT] = v->highlight_end[END_RIGHT] = true;
     if (g->phase != PHASE_PLAYING) {

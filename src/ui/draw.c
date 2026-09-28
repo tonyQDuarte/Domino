@@ -119,6 +119,21 @@ static void draw_hands(const Controller *c, const View *v)
                 draw_back(ri);
         }
     }
+
+    /* peças de fora, no canto superior direito */
+    RectF z[SLEEPING_COUNT];
+    layout_sleeping(z);
+    for (int i = 0; i < v->sleeping_shown; i++) {
+        RectF zi = z[i];
+        zi.x += zi.w * (1 - v->flip_scale) / 2;
+        zi.w *= v->flip_scale;
+        if (zi.w < 1)
+            continue;
+        if (v->sleeping_face_up)
+            draw_tile(zi, true, g->sleeping[i].a, g->sleeping[i].b, false);
+        else
+            draw_back(zi);
+    }
 }
 
 static void draw_overlay(const View *v, Font f)

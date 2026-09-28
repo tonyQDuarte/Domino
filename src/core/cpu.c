@@ -29,10 +29,16 @@ CpuView cpu_view_of(const Game *g, Seat s)
 static int list_moves(const CpuView *v, Move out[HAND_SIZE * 2])
 {
     int n = 0;
+    /* primeira mão: a vez é de quem tem a maior carroça distribuída, então a maior
+       carroça da própria mão é a de abertura */
+    int top = -1;
+    for (int i = 0; i < v->own.count; i++)
+        if (v->own.tiles[i].a == v->own.tiles[i].b && v->own.tiles[i].a > top)
+            top = v->own.tiles[i].a;
     for (int i = 0; i < v->own.count; i++) {
         Tile t = v->own.tiles[i];
         if (v->empty) {
-            if (v->first_hand ? (t.a == 6 && t.b == 6) : t.a == t.b)
+            if (v->first_hand ? (t.a == top && t.b == top) : t.a == t.b)
                 out[n++] = (Move){i, END_LEFT, t.a, t.b};
             continue;
         }

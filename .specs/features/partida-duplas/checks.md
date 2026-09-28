@@ -32,6 +32,7 @@ Proof: `ctest --test-dir build -R "^cpu_rows_match_hand_count$" --output-on-fail
 
 - [x] **C6** - A mesma seed produz as mesmas 4 mãos, e `--seed 42` chega ao jogo como a seed 42 (AC 5)
 Proof: `ctest --test-dir build -R "^deal_same_seed_same_hands$" --output-on-failure`
+> Ajustado por `pecas-de-fora` (2026-09-28): o laço que comparava as mãos usava um `7` fixo e passou a usar `HAND_SIZE` (6). A afirmação do check não muda.
 Proof: `ctest --test-dir build -R "^cli_parse_seed$" --output-on-failure`
 
 - [x] **C7** - `--seed x`, `--seed -1`, `--seed` sem valor e `--foo` fazem `domino.exe` escrever `uso: domino [--seed <n>]` no stderr e sair com código 2, sem abrir janela (AC 6)

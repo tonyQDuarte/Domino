@@ -5,7 +5,8 @@
 #include <stdint.h>
 
 #define TILE_COUNT 28
-#define HAND_SIZE 7
+#define HAND_SIZE 6
+#define SLEEPING_COUNT 4 /* peças que ficam de fora a cada mão */
 #define WIN_SCORE 6
 
 typedef struct {
@@ -62,6 +63,8 @@ typedef struct {
     int result_team;   /* -1 quando ninguém pontua */
     uint64_t rng;
     bool lacks[SEAT_COUNT][7]; /* valores em que cada assento já passou nesta mão */
+    Tile sleeping[SLEEPING_COUNT]; /* peças de fora desta mão */
+    uint8_t opening_double;        /* primeira mão: valor da maior carroça distribuída */
 } Game;
 
 bool tile_is_double(Tile t);
@@ -79,8 +82,8 @@ void game_next_hand(Game *g);
    lead, parceiro do lead, seguinte ao lead, parceiro do seguinte. */
 Seat game_choose_opener(const Game *g, Seat lead);
 
-/* Pontas em que a peça encaixa agora. Mesa vazia: só END_LEFT, e só [6|6] na
-   primeira mão ou carroça nas outras. */
+/* Pontas em que a peça encaixa agora. Mesa vazia: só END_LEFT, e só a maior carroça
+   distribuída na primeira mão ou carroça nas outras. */
 void game_fits(const Game *g, Tile t, bool *left, bool *right);
 bool game_has_move(const Game *g, Seat s);
 /* Joga hands[turn].tiles[index] na ponta pedida. Retorna false se não for válida. */

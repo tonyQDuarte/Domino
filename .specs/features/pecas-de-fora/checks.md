@@ -12,43 +12,43 @@ Build e PATH como em `AGENTS.md`. Os testes novos ficam em `tests/test_fora.c` (
 
 ### S1 - Cada jogador recebe 6 e 4 ficam de fora · 6 files · ~30 KB · ~8k
 
-- [ ] **C1** - Em 1000 seeds, cada assento recebe 6 peças, `sleeping` tem 4, e as 28 peças de mãos mais `sleeping` são exatamente o conjunto `[a|b]` com 0 <= a <= b <= 6, cada uma uma vez (AC 1)
+- [x] **C1** - Em 1000 seeds, cada assento recebe 6 peças, `sleeping` tem 4, e as 28 peças de mãos mais `sleeping` são exatamente o conjunto `[a|b]` com 0 <= a <= b <= 6, cada uma uma vez (AC 1)
 Proof: `ctest --test-dir build -R "^deal_6_each_4_out$" --output-on-failure`
 
-- [ ] **C2** - Durante a mão, `ctl_view` mostra 4 peças de fora de costas; os 4 retângulos de `layout_sleeping` ficam no canto superior direito (x >= 1000, y + h <= 110), dentro da janela, e não encostam na área da mesa, na fileira do Norte, na coluna do Leste nem no placar (AC 2)
+- [x] **C2** - Durante a mão, `ctl_view` mostra 4 peças de fora de costas; os 4 retângulos de `layout_sleeping` ficam no canto superior direito (x >= 1000, y + h <= 110), dentro da janela, e não encostam na área da mesa, na fileira do Norte, na coluna do Leste nem no placar (AC 2)
 Proof: `ctest --test-dir build -R "^sleeping_corner_face_down$" --output-on-failure`
 
-- [ ] **C3** - Em 200 seeds, em cada vez de CPU, trocar as 4 peças de fora com peças das mãos dos outros três assentos não muda a peça nem a ponta escolhidas por `cpu_choose` (AC 3)
+- [x] **C3** - Em 200 seeds, em cada vez de CPU, trocar as 4 peças de fora com peças das mãos dos outros três assentos não muda a peça nem a ponta escolhidas por `cpu_choose` (AC 3)
 Proof: `ctest --test-dir build -R "^cpu_ignores_sleeping$" --output-on-failure`
 
-- [ ] **C4** - Com animações, a peça k sai do centro da mesa aos 50·k ms e chega aos 50·k + 300 ms: para k < 24, na mão do assento k mod 4, posição k div 4; para k >= 24, na posição k − 24 do canto das peças de fora; aos 1650 ms não há peça em voo (AC 4)
+- [x] **C4** - Com animações, a peça k sai do centro da mesa aos 50·k ms e chega aos 50·k + 300 ms: para k < 24, na mão do assento k mod 4, posição k div 4; para k >= 24, na posição k − 24 do canto das peças de fora; aos 1650 ms não há peça em voo (AC 4)
 Proof: `ctest --test-dir build -R "^deal_sends_four_to_corner$" --output-on-failure`
 
-- [ ] **C5** - De 0 a 1700 ms, a cada 25 ms, `sleeping_shown` é o número de peças k >= 24 que já chegaram (50·k + 300 <= t) (AC 5)
+- [x] **C5** - De 0 a 1700 ms, a cada 25 ms, `sleeping_shown` é o número de peças k >= 24 que já chegaram (50·k + 300 <= t) (AC 5)
 Proof: `ctest --test-dir build -R "^deal_corner_shows_arrived_only$" --output-on-failure`
 
 ### S2 - A primeira mão abre com a maior carroça distribuída · 3 files · ~15 KB · ~4k
 
-- [ ] **C6** - Em 1000 seeds, na primeira mão a vez é de quem tem a maior carroça distribuída, só essa carroça é aceita como abertura (as outras carroças e as peças comuns são recusadas), a CPU que abre escolhe essa carroça, e em pelo menos uma seed o `[6|6]` está entre as peças de fora (AC 6)
+- [x] **C6** - Em 1000 seeds, na primeira mão a vez é de quem tem a maior carroça distribuída, só essa carroça é aceita como abertura (as outras carroças e as peças comuns são recusadas), a CPU que abre escolhe essa carroça, e em pelo menos uma seed o `[6|6]` está entre as peças de fora (AC 6)
 Proof: `ctest --test-dir build -R "^first_hand_highest_double$" --output-on-failure`
 
-- [ ] **C7** - Numa primeira mão em que o Sul abre, um clique em outra peça deixa a mesa vazia e mostra `Jogada inválida`; o clique na maior carroça abre a mão (AC 7)
+- [x] **C7** - Numa primeira mão em que o Sul abre, um clique em outra peça deixa a mesa vazia e mostra `Jogada inválida`; o clique na maior carroça abre a mão (AC 7)
 Proof: `ctest --test-dir build -R "^south_first_open_invalid$" --output-on-failure`
 
 ### S3 - As peças de fora aparecem no fim · 2 files · ~10 KB · ~3k
 
-- [ ] **C8** - Numa batida com animações, as peças de fora estão de costas aos 350 ms e aos 549 ms e de face aos 550 ms, e `flip_scale` é o mesmo das CPUs (AC 8)
+- [x] **C8** - Numa batida com animações, as peças de fora estão de costas aos 350 ms e aos 549 ms e de face aos 550 ms, e `flip_scale` é o mesmo das CPUs (AC 8)
 Proof: `ctest --test-dir build -R "^reveal_flips_sleeping$" --output-on-failure`
 
-- [ ] **C9** - Numa batida com animações desligadas, as 4 peças de fora estão de face logo depois do clique que bate (AC 9)
+- [x] **C9** - Numa batida com animações desligadas, as 4 peças de fora estão de face logo depois do clique que bate (AC 9)
 Proof: `ctest --test-dir build -R "^sleeping_face_up_without_animation$" --output-on-failure`
 
-- [ ] **C10** - Com o quadro de fim de mão ou de fim de partida visível, as peças de fora estão de face e as 4 aparecem (AC 10)
+- [x] **C10** - Com o quadro de fim de mão ou de fim de partida visível, as peças de fora estão de face e as 4 aparecem (AC 10)
 Proof: `ctest --test-dir build -R "^sleeping_shown_with_overlay$" --output-on-failure`
 
 ### S4 - O resto continua igual · 4 files · ~5 KB · ~1k
 
-- [ ] **C11** - A suíte inteira passa, incluindo os 8 testes antigos reescritos para a regra nova (`deal_28_unique_7_each`, `first_hand_double_six_starts`, `first_hand_rejects_non_double_six`, `hand_end_overlay`, `new_match_resets`, `deal_animation_timing`, `deal_shows_arrived_only`, `deal_blocks_play`); nenhum outro teste antigo muda (AC 11)
+- [x] **C11** - A suíte inteira passa, incluindo os 8 testes antigos reescritos para a regra nova (`deal_28_unique_7_each`, `first_hand_double_six_starts`, `first_hand_rejects_non_double_six`, `hand_end_overlay`, `new_match_resets`, `deal_animation_timing`, `deal_shows_arrived_only`, `deal_blocks_play`); nenhum outro teste antigo muda (AC 11)
 Proof: `ctest --test-dir build --output-on-failure`
 Proof: `git diff --stat 83cfbc6 -- tests/test_process.c tests/test_window.c tests/test_app_anim.c tests/test_carroca.c tests/harness.h tests/fixtures.h tests/core_has_no_raylib.cmake`
 

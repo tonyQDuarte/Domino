@@ -9,11 +9,23 @@
 
 /* ---------- helpers ---------- */
 
-static Seat holder_of_double_six(const Game *g)
+/* Maior carroça distribuída (pecas-de-fora: o [6|6] pode ter ficado de fora). */
+static int highest_double_value(const Game *g)
 {
+    for (int d = 6; d >= 0; d--)
+        for (int s = 0; s < SEAT_COUNT; s++)
+            for (int i = 0; i < g->hands[s].count; i++)
+                if (g->hands[s].tiles[i].a == d && g->hands[s].tiles[i].b == d)
+                    return d;
+    return -1;
+}
+
+static Seat holder_of_opening_double(const Game *g)
+{
+    int d = highest_double_value(g);
     for (int s = 0; s < SEAT_COUNT; s++)
         for (int i = 0; i < g->hands[s].count; i++)
-            if (g->hands[s].tiles[i].a == 6 && g->hands[s].tiles[i].b == 6)
+            if (g->hands[s].tiles[i].a == d && g->hands[s].tiles[i].b == d)
                 return (Seat)s;
     return SEAT_COUNT;
 }
@@ -61,8 +73,9 @@ static int deal_28_unique_7_each(void)
         game_new_match(&g, seed);
         int seen[7][7] = {{0}};
         int total = 0;
+        /* pecas-de-fora: 6 por assento e 4 de fora, as 28 sem repetição */
         for (int s = 0; s < SEAT_COUNT; s++) {
-            CHECK(g.hands[s].count == 7);
+            CHECK(g.hands[s].count == 6);
             for (int i = 0; i < g.hands[s].count; i++) {
                 Tile t = g.hands[s].tiles[i];
                 CHECK(t.a <= 6 && t.b <= 6);
@@ -70,6 +83,12 @@ static int deal_28_unique_7_each(void)
                 seen[lo][hi]++;
                 total++;
             }
+        }
+        for (int i = 0; i < SLEEPING_COUNT; i++) {
+            Tile t = g.sleeping[i];
+            CHECK(t.a <= 6 && t.b <= 6);
+            seen[t.a < t.b ? t.a : t.b][t.a < t.b ? t.b : t.a]++;
+            total++;
         }
         CHECK(total == 28);
         for (int a = 0; a <= 6; a++)
@@ -98,7 +117,7 @@ static int deal_same_seed_same_hands(void)
     game_new_match(&a, 1);
     game_new_match(&b, 2);
     bool differ = false;
-    for (int i = 0; i < 7; i++)
+    for (int i = 0; i < HAND_SIZE; i++) /* pecas-de-fora: a mão tem 6 */
         if (a.hands[0].tiles[i].a != b.hands[0].tiles[i].a ||
             a.hands[0].tiles[i].b != b.hands[0].tiles[i].b)
             differ = true;
@@ -198,7 +217,7 @@ static int first_hand_double_six_starts(void)
         Game g;
         game_new_match(&g, seed);
         CHECK(g.first_hand);
-        CHECK(g.turn == holder_of_double_six(&g));
+        CHECK(g.turn == holder_of_opening_double(&g));
     }
     return 0;
 }
@@ -209,7 +228,8 @@ static int first_hand_rejects_non_double_six(void)
         Game g;
         game_new_match(&g, seed);
         Hand *h = &g.hands[g.turn];
-        int six = find_tile(h, 6, 6);
+        int d = highest_double_value(&g);
+        int six = find_tile(h, d, d); /* a carroça de abertura (pecas-de-fora) */
         CHECK(six >= 0);
         for (int i = 0; i < h->count; i++) {
             if (i == six)
@@ -217,7 +237,7 @@ static int first_hand_rejects_non_double_six(void)
             CHECK(!game_play(&g, i, END_LEFT));
             CHECK(!game_play(&g, i, END_RIGHT));
             CHECK(g.board.count == 0);
-            CHECK(h->count == 7);
+            CHECK(h->count == 6);
         }
         Seat opener = g.turn;
         CHECK(game_play(&g, six, END_LEFT));
@@ -657,7 +677,7 @@ static int hand_end_overlay(void)
             ctl_click(&c, 10, 10);
         CHECK(c.game.phase == PHASE_PLAYING);
         for (int k = 0; k < SEAT_COUNT; k++)
-            CHECK(c.game.hands[k].count == 7);
+            CHECK(c.game.hands[k].count == 6); /* pecas-de-fora: 6 por mão */
         CHECK(c.game.board.count == 0);
     }
 
@@ -824,7 +844,7 @@ static int new_match_resets(void)
     CHECK(c.game.score[TEAM_THEM] == 0);
     CHECK(c.game.first_hand);
     CHECK(c.game.board.count == 0);
-    CHECK(c.game.turn == holder_of_double_six(&c.game));
+    CHECK(c.game.turn == holder_of_opening_double(&c.game));
     View v;
     ctl_view(&c, &v);
     CHECK(strcmp(v.score_text, "Nós 0 × 0 Eles") == 0);

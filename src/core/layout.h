@@ -27,5 +27,7 @@ RectF layout_end_target(const Board *b, End end);
 void layout_south_hand(int count, RectF out[HAND_SIZE]);
 void layout_cpu_row(Seat s, int count, RectF out[HAND_SIZE]);
 RectF layout_new_match_button(void);
+/* Lugar das peças de fora: canto superior direito. */
+void layout_sleeping(RectF out[SLEEPING_COUNT]);
 
 #endif
