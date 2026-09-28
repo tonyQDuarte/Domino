@@ -82,9 +82,9 @@ Proof: `ctest --test-dir build -R "^pulse_period_800$" --output-on-failure`
 
 ### S6 - O que já existe continua igual · 3 files · ~10 KB · ~3k
 
-- [x] **C21** - Os 40 testes de `partida-duplas` (label `partida-duplas`) passam, e os arquivos `tests/test_core.c`, `tests/test_process.c`, `tests/test_window.c`, `tests/harness.h`, `tests/fixtures.h` e `tests/core_has_no_raylib.cmake` não mudaram desde `7ab288b` (AC 19)
+- [x] **C21** - Os 40 testes de `partida-duplas` (label `partida-duplas`) passam, e os arquivos `tests/test_core.c`, `tests/test_process.c`, `tests/test_window.c`, `tests/harness.h`, `tests/fixtures.h` e `tests/core_has_no_raylib.cmake` não mudaram desde `39873e8` (AC 19)
 Proof: `ctest --test-dir build -L partida-duplas --output-on-failure`
-Proof: `git diff --exit-code 7ab288b -- tests/test_core.c tests/test_process.c tests/test_window.c tests/harness.h tests/fixtures.h tests/core_has_no_raylib.cmake`
+Proof: `git diff --exit-code 39873e8 -- tests/test_core.c tests/test_process.c tests/test_window.c tests/harness.h tests/fixtures.h tests/core_has_no_raylib.cmake`
 
 - [x] **C22** - No primeiro quadro de `app_run`, o controlador está com as animações ligadas e a distribuição em andamento (AC 20, door 2)
 Proof: `ctest --test-dir build -R "^app_animations_on$" --output-on-failure`

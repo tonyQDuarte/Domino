@@ -2,7 +2,7 @@
 
 **Verdict**: PASS
 **Profile**: light
-**Diff range**: c4e22fc..0223dbd (HEAD)
+**Diff range**: 190bc42..6e09698 (HEAD)
 **Round**: 1 - full
 **Verifier**: independent sub-agent (author != verifier)
 
@@ -16,7 +16,7 @@ The diff to `checks.md` in the range is only the 38 `[ ]` -> `[x]` ticks (checke
 
 ## Checks
 
-All CTest proofs were run in one invocation at HEAD `0223dbd`: `ctest --test-dir build --output-on-failure -V` -> exit 0, `100% tests passed out of 40`. Each of the 39 named tests below appears individually as `Passed` in that output, is registered in `CMakeLists.txt:47-71`, and resolves to a function in `tests/*.c` dispatched by name (`tests/harness.h:20-31`, unknown name returns 2, so a misnamed test cannot pass silently).
+All CTest proofs were run in one invocation at HEAD `6e09698`: `ctest --test-dir build --output-on-failure -V` -> exit 0, `100% tests passed out of 40`. Each of the 39 named tests below appears individually as `Passed` in that output, is registered in `CMakeLists.txt:47-71`, and resolves to a function in `tests/*.c` dispatched by name (`tests/harness.h:20-31`, unknown name returns 2, so a misnamed test cannot pass silently).
 
 | Check | Claim | Proof run | Evidence | Result |
 | --- | --- | --- | --- | --- |
