@@ -14,9 +14,9 @@
 ## Handoff
 
 **Feature**: cpu-parceria-animacao
-**Where**: C1-C23 fechados; aguardando o Verifier
+**Where**: C1-C23 fechados; Verifier independente rodada 2: PASS (standard, 23/23, 10 falhas injetadas e mortas)
 **In progress**: nada
-**Next step**: Verifier independente (standard)
+**Next step**: próxima feature a combinar com o usuário
 **Blockers**: nenhum
 **Uncommitted**: nada
 **Branch**: feat/cpu-parceria-animacao
