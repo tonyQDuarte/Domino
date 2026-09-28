@@ -51,6 +51,7 @@ Proof: `ctest --test-dir build -R "^sleeping_shown_with_overlay$" --output-on-fa
 - [x] **C11** - A suíte inteira passa, incluindo os 8 testes antigos reescritos para a regra nova (`deal_28_unique_7_each`, `first_hand_double_six_starts`, `first_hand_rejects_non_double_six`, `hand_end_overlay`, `new_match_resets`, `deal_animation_timing`, `deal_shows_arrived_only`, `deal_blocks_play`); nenhum outro teste antigo muda (AC 11)
 Proof: `ctest --test-dir build --output-on-failure`
 Proof: `git diff --stat 83cfbc6 -- tests/test_process.c tests/test_window.c tests/test_app_anim.c tests/test_carroca.c tests/harness.h tests/fixtures.h tests/core_has_no_raylib.cmake`
+> Nota do build: um nono teste antigo mudou, `deal_same_seed_same_hands` (C6 de `partida-duplas`), que percorria a mão com um `7` fixo e passou a ler fora do vetor. O limite virou `HAND_SIZE` e a afirmação do teste não mudou. Está registrado no `Impact` do plano e na nota do C6 de `partida-duplas`.
 
 ## Coverage
 

@@ -14,9 +14,9 @@
 ## Handoff
 
 **Feature**: pecas-de-fora
-**Where**: C1-C11 fechados; aguardando o Verifier
+**Where**: C1-C11 fechados; Verifier independente: PASS (standard, 11/11, 5 falhas injetadas e mortas)
 **In progress**: nada
-**Next step**: Verifier independente (standard)
+**Next step**: o usuário testa o jogo; próxima feature a combinar
 **Blockers**: nenhum
 **Uncommitted**: nada
 **Branch**: feat/pecas-de-fora
