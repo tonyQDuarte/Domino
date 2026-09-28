@@ -21,6 +21,7 @@ Proof: `ctest --test-dir build -R "^window_table_color$" --output-on-failure`
 
 - [x] **C3** - Para as seeds 0 a 999, a distribuição dá 7 peças a cada um dos 4 assentos, e as 28 peças são exatamente o conjunto `[a|b]` com 0 <= a <= b <= 6, sem repetição (AC 2)
 Proof: `ctest --test-dir build -R "^deal_28_unique_7_each$" --output-on-failure`
+> Substituído por `pecas-de-fora` a pedido do usuário (2026-09-28): 6 peças por jogador e 4 de fora; a primeira mão abre com a maior carroça distribuída. O teste foi reescrito para a regra nova.
 
 - [x] **C4** - A mão do Sul aparece em ordem crescente de soma e todos os retângulos dela ficam na faixa inferior da janela (y >= 560) (AC 3)
 Proof: `ctest --test-dir build -R "^south_hand_sorted_by_sum$" --output-on-failure`
@@ -47,6 +48,7 @@ Proof: `ctest --test-dir build -R "^cli_close_exits_0$" --output-on-failure`
 - [x] **C10** - Na primeira mão da partida, a vez começa com quem tem `[6|6]` e qualquer outra peça é recusada como primeira jogada (AC 9)
 Proof: `ctest --test-dir build -R "^first_hand_double_six_starts$" --output-on-failure`
 Proof: `ctest --test-dir build -R "^first_hand_rejects_non_double_six$" --output-on-failure`
+> Substituído por `pecas-de-fora` a pedido do usuário (2026-09-28): 6 peças por jogador e 4 de fora; a primeira mão abre com a maior carroça distribuída. O teste foi reescrito para a regra nova.
 
 - [x] **C11** - Depois de cada jogada ou passe, a vez vai Sul → Leste → Norte → Oeste → Sul (AC 10)
 Proof: `ctest --test-dir build -R "^turn_order_counterclockwise$" --output-on-failure`
@@ -105,6 +107,7 @@ Proof: `ctest --test-dir build -R "^score_trancado_tie$" --output-on-failure`
 
 - [x] **C28** - No fim da mão as peças dos 4 assentos ficam marcadas para desenho de face, o overlay traz o tipo, os pontos e o placar, e só um clique ou Enter começa a próxima mão (AC 27)
 Proof: `ctest --test-dir build -R "^hand_end_overlay$" --output-on-failure`
+> Substituído por `pecas-de-fora` a pedido do usuário (2026-09-28): 6 peças por jogador e 4 de fora; a primeira mão abre com a maior carroça distribuída. O teste foi reescrito para a regra nova.
 
 - [x] **C29** - Na mão seguinte a uma batida, a vez começa com quem bateu, e uma peça diferente de `[6|6]` é aceita como abertura (AC 28)
 Proof: `ctest --test-dir build -R "^next_hand_winner_starts$" --output-on-failure`
@@ -122,6 +125,7 @@ Proof: `ctest --test-dir build -R "^match_end_message$" --output-on-failure`
 
 - [x] **C33** - Clicar em `Nova partida` zera o placar para 0 × 0 e a mão nova volta à regra do `[6|6]` (AC 32)
 Proof: `ctest --test-dir build -R "^new_match_resets$" --output-on-failure`
+> Substituído por `pecas-de-fora` a pedido do usuário (2026-09-28): 6 peças por jogador e 4 de fora; a primeira mão abre com a maior carroça distribuída. O teste foi reescrito para a regra nova.
 
 ### S5 - A linha de peças cabe na mesa · ~3 files · ~12 KB · ~3k
 

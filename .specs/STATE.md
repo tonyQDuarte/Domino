@@ -13,10 +13,10 @@
 
 ## Handoff
 
-**Feature**: abertura-carroca
-**Where**: C1-C9 fechados; Verifier independente: PASS (standard, 9/9, 5 falhas injetadas e mortas)
+**Feature**: pecas-de-fora
+**Where**: plan aprovado (standard), checks escritos; construindo
 **In progress**: nada
-**Next step**: o usuário testa o jogo; próxima feature a combinar
+**Next step**: testes de C1-C11, depois implementação
 **Blockers**: nenhum
 **Uncommitted**: nada
-**Branch**: feat/abertura-carroca
+**Branch**: feat/pecas-de-fora

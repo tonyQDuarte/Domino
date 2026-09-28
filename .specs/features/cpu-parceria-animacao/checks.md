@@ -57,12 +57,15 @@ Proof: `ctest --test-dir build -R "^slide_blocks_timer_and_clicks$" --output-on-
 
 - [x] **C14** - Ao começar a mão com animações, a peça k (0..27) sai do centro da área da mesa aos 50·k ms para o assento k mod 4 (Sul, Leste, Norte, Oeste), chega ao centro do lugar dela na mão aos 50·k + 300 ms, e não há peça em voo aos 1650 ms (AC 12)
 Proof: `ctest --test-dir build -R "^deal_animation_timing$" --output-on-failure`
+> Substituído por `pecas-de-fora` a pedido do usuário (2026-09-28): 6 peças por jogador e 4 de fora; a primeira mão abre com a maior carroça distribuída. O teste foi reescrito para a regra nova.
 
 - [x] **C15** - De 0 a 1700 ms, a cada 25 ms, `hand_shown[s]` é igual ao número de peças k com k mod 4 = s que já chegaram (50·k + 300 <= t) (AC 13)
 Proof: `ctest --test-dir build -R "^deal_shows_arrived_only$" --output-on-failure`
+> Substituído por `pecas-de-fora` a pedido do usuário (2026-09-28): 6 peças por jogador e 4 de fora; a primeira mão abre com a maior carroça distribuída. O teste foi reescrito para a regra nova.
 
 - [x] **C16** - Durante a distribuição, um clique numa peça do Sul não joga, o Sul sem jogada não passa, e a CPU que abre não joga antes de 1650 + 800 ms; aos 1650 + 800 ms ela joga (AC 14)
 Proof: `ctest --test-dir build -R "^deal_blocks_play$" --output-on-failure`
+> Substituído por `pecas-de-fora` a pedido do usuário (2026-09-28): 6 peças por jogador e 4 de fora; a primeira mão abre com a maior carroça distribuída. O teste foi reescrito para a regra nova.
 
 ### S4 - As mãos viram no fim · 2 files · ~15 KB · ~4k
 

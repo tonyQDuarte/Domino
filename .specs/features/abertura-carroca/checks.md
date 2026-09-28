@@ -26,6 +26,7 @@ Proof: `ctest --test-dir build -R "^cpu_opens_with_double$" --output-on-failure`
 - [x] **C4** - A primeira mão da partida continua abrindo com `[6|6]` por quem o tem (AC 4)
 Proof: `ctest --test-dir build -R "^first_hand_double_six_starts$" --output-on-failure`
 Proof: `ctest --test-dir build -R "^first_hand_rejects_non_double_six$" --output-on-failure`
+> Substituído por `pecas-de-fora` a pedido do usuário (2026-09-28): 6 peças por jogador e 4 de fora; a primeira mão abre com a maior carroça distribuída. O teste foi reescrito para a regra nova.
 
 ### S2 - A vez de abrir respeita a dupla vencedora · 3 files · ~25 KB · ~6k
 
