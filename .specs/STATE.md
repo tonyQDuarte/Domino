@@ -14,9 +14,9 @@
 ## Handoff
 
 **Feature**: abertura-carroca
-**Where**: C1-C9 fechados; aguardando o Verifier
+**Where**: C1-C9 fechados; Verifier independente: PASS (standard, 9/9, 5 falhas injetadas e mortas)
 **In progress**: nada
-**Next step**: Verifier independente (standard)
+**Next step**: o usuário testa o jogo; próxima feature a combinar
 **Blockers**: nenhum
 **Uncommitted**: nada
 **Branch**: feat/abertura-carroca

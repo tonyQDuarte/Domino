@@ -30,7 +30,7 @@ enxergando a regra só pelo `CpuView`.
 | Front | What changes |
 | --- | --- |
 | behaviour | **AC 28 e AC 29 de `partida-duplas` são substituídos** pelos AC 3 a 5 daqui. A mão seguinte deixa de abrir com "qualquer peça", e quem bateu, ou quem abriu a mão trancada, só abre se tiver carroça |
-| tests | os testes `next_hand_winner_starts` (C29) e `next_hand_after_tranque` (C30) de `partida-duplas` afirmam "aceita qualquer peça" e "abre quem bateu/abriu" a partir de uma distribuição aleatória. Eles passam a montar mãos fixas e a aceitar só carroça. É uma mudança em `tests/test_core.c`, feita porque a regra mudou, e fica registrada como nota em `partida-duplas/checks.md` (C29, C30) |
+| tests | os testes `next_hand_winner_starts` (C29) e `next_hand_after_tranque` (C30) de `partida-duplas` afirmam "aceita qualquer peça" e "abre quem bateu/abriu" a partir de uma distribuição aleatória. Eles passam a calcular, com a distribuição da semente fixa, quem a ordem da carroça manda abrir, e a aceitar só carroça (as outras posições da ordem são provadas por mãos fixas em `test_carroca.c`). É uma mudança em `tests/test_core.c`, feita porque a regra mudou, e fica registrada como nota em `partida-duplas/checks.md` (C29, C30) |
 | tests | a segunda prova do C21 de `cpu-parceria-animacao` (`tests/test_core.c` igual a `39873e8`) deixa de valer pelo mesmo motivo. Ganha uma nota de substituição, e os outros arquivos de teste antigos continuam intocados |
 | domain | termo existente: `next_opener` deixa de ser "quem abre" e vira "por onde começa a procura por uma carroça". Quem depende disso: só `start_hand` em `rules.c` |
 | stored data | nada a migrar - continua sem nada gravado |
