@@ -18,7 +18,7 @@ chegar a 6 pontos.
 Projeto novo: não há nada para reaproveitar. A única reutilização é a raylib, que cuida de janela,
 entrada e desenho, sem código próprio de plataforma.
 
-1. linha de comando -> `main` (door 3) - lê `--seed`, semeia o RNG e abre a janela pela raylib (door 1)
+1. linha de comando -> `main` (door 3) - lê `--seed` e chama `app_run` da `domino_ui` (biblioteca `domino_app`, também usada pelo teste da janela), que abre a janela pela raylib (door 1)
 2. `domino_core` (door 3) - embaralha e distribui as 28 peças e define quem começa (`[6|6]` ou quem bateu)
 3. clique do mouse e tempo do quadro -> `domino_ui` (door 3) - repassa posição do clique e `dt` ao controlador do `domino_core`, que acerta a peça/ponta pelo layout e decide a jogada
 4. `domino_core` - valida e aplica a jogada (ou o passe), avança a vez no sentido anti-horário
