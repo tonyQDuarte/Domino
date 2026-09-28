@@ -96,3 +96,15 @@ target_link_libraries(test_app_anim PRIVATE domino_app)
 add_test(NAME app_animations_on COMMAND test_app_anim app_animations_on
   WORKING_DIRECTORY $<TARGET_FILE_DIR:domino>)
 set_tests_properties(app_animations_on PROPERTIES LABELS cpu-parceria-animacao)
+
+# abertura-carroca
+add_executable(test_carroca tests/test_carroca.c)
+target_link_libraries(test_carroca PRIVATE domino_core)
+
+foreach(t
+    open_requires_double south_open_non_double_invalid cpu_opens_with_double
+    opener_order_after_batida next_hand_uses_opener_order
+    tranque_winner_leads_opening tranque_tie_leads_from_opener)
+  add_test(NAME ${t} COMMAND test_carroca ${t})
+  set_tests_properties(${t} PROPERTIES LABELS abertura-carroca)
+endforeach()

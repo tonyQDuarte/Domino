@@ -32,7 +32,7 @@ static int list_moves(const CpuView *v, Move out[HAND_SIZE * 2])
     for (int i = 0; i < v->own.count; i++) {
         Tile t = v->own.tiles[i];
         if (v->empty) {
-            if (!v->first_hand || (t.a == 6 && t.b == 6))
+            if (v->first_hand ? (t.a == 6 && t.b == 6) : t.a == t.b)
                 out[n++] = (Move){i, END_LEFT, t.a, t.b};
             continue;
         }

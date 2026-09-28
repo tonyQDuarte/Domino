@@ -61,7 +61,7 @@ static void start_hand(Game *g)
         sort_hand(&g->hands[s]);
     }
     memset(&g->board, 0, sizeof g->board);
-    g->turn = g->first_hand ? holder_of(g, 6, 6) : g->next_opener;
+    g->turn = g->first_hand ? holder_of(g, 6, 6) : game_choose_opener(g, g->next_opener);
     g->opener = g->turn;
     g->passes = 0;
     g->phase = PHASE_PLAYING;
@@ -69,6 +69,24 @@ static void start_hand(Game *g)
     g->result_points = 0;
     g->result_team = -1;
     memset(g->lacks, 0, sizeof g->lacks);
+}
+
+static bool has_double(const Hand *h)
+{
+    for (int i = 0; i < h->count; i++)
+        if (tile_is_double(h->tiles[i]))
+            return true;
+    return false;
+}
+
+Seat game_choose_opener(const Game *g, Seat lead)
+{
+    Seat order[4] = {lead, (Seat)((lead + 2) % SEAT_COUNT), next_seat(lead),
+                     (Seat)((lead + 3) % SEAT_COUNT)};
+    for (int k = 0; k < 4; k++)
+        if (has_double(&g->hands[order[k]]))
+            return order[k];
+    return lead; /* não acontece: as 7 carroças estão sempre nas mãos */
 }
 
 void game_restart_match(Game *g)
@@ -95,7 +113,7 @@ void game_fits(const Game *g, Tile t, bool *left, bool *right)
 {
     const Board *b = &g->board;
     if (b->count == 0) {
-        *left = !g->first_hand || (t.a == 6 && t.b == 6);
+        *left = g->first_hand ? (t.a == 6 && t.b == 6) : tile_is_double(t);
         *right = false;
         return;
     }
@@ -201,7 +219,9 @@ void game_pass(Game *g)
         int us = hand_points(&g->hands[SEAT_SOUTH]) + hand_points(&g->hands[SEAT_NORTH]);
         int them = hand_points(&g->hands[SEAT_EAST]) + hand_points(&g->hands[SEAT_WEST]);
         int team = us < them ? TEAM_US : them < us ? TEAM_THEM : -1;
-        g->next_opener = g->opener;
+        /* a procura começa na dupla que ganhou o ponto; no empate, em quem abriu */
+        g->next_opener = (team < 0 || (int)team_of(g->opener) == team) ? g->opener
+                                                                         : next_seat(g->opener);
         finish_hand(g, RESULT_TRANCADO, team, team >= 0 ? 1 : 0);
         return;
     }

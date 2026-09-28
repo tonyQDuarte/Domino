@@ -683,6 +683,38 @@ static int hand_end_overlay(void)
     return 0;
 }
 
+/* Regra da carroça (abertura-carroca, substitui AC 28 e AC 29): a abertura vai para o primeiro,
+   na ordem lead, parceiro, seguinte, parceiro do seguinte, que tem carroça, e só carroça abre. */
+static Seat carroca_opener(const Game *g, Seat lead)
+{
+    Seat order[4] = {lead, (Seat)((lead + 2) % 4), (Seat)((lead + 1) % 4), (Seat)((lead + 3) % 4)};
+    for (int k = 0; k < 4; k++)
+        for (int i = 0; i < g->hands[order[k]].count; i++)
+            if (g->hands[order[k]].tiles[i].a == g->hands[order[k]].tiles[i].b)
+                return order[k];
+    return SEAT_COUNT;
+}
+
+static int opens_only_with_double(Game *g)
+{
+    Hand *h = &g->hands[g->turn];
+    int dbl = -1, other = -1;
+    for (int i = 0; i < h->count; i++) {
+        if (h->tiles[i].a == h->tiles[i].b)
+            dbl = i;
+        else
+            other = i;
+    }
+    CHECK(dbl >= 0);
+    if (other >= 0) {
+        CHECK(!game_play(g, other, END_LEFT));
+        CHECK(g->board.count == 0);
+    }
+    CHECK(game_play(g, dbl, END_LEFT));
+    CHECK(g->board.count == 1);
+    return 0;
+}
+
 static int next_hand_winner_starts(void)
 {
     Game g;
@@ -697,17 +729,8 @@ static int next_hand_winner_starts(void)
     game_next_hand(&g);
     CHECK(g.phase == PHASE_PLAYING);
     CHECK(!g.first_hand);
-    CHECK(g.turn == SEAT_EAST);
-    Hand *h = &g.hands[SEAT_EAST];
-    int idx = -1;
-    for (int i = 0; i < h->count; i++)
-        if (!(h->tiles[i].a == 6 && h->tiles[i].b == 6)) {
-            idx = i;
-            break;
-        }
-    CHECK(idx >= 0);
-    CHECK(game_play(&g, idx, END_LEFT));
-    CHECK(g.board.count == 1);
+    CHECK(g.turn == carroca_opener(&g, SEAT_EAST));
+    CHECK(opens_only_with_double(&g) == 0);
     return 0;
 }
 
@@ -720,17 +743,10 @@ static int next_hand_after_tranque(void)
         game_pass(&g);
     CHECK(g.phase == PHASE_HAND_OVER);
     game_next_hand(&g);
-    CHECK(g.turn == SEAT_WEST);
+    /* Eles ganharam o ponto e o Oeste, que abriu, é deles: a procura começa no Oeste */
+    CHECK(g.turn == carroca_opener(&g, SEAT_WEST));
     CHECK(!g.first_hand);
-    Hand *h = &g.hands[SEAT_WEST];
-    int idx = -1;
-    for (int i = 0; i < h->count; i++)
-        if (!(h->tiles[i].a == 6 && h->tiles[i].b == 6)) {
-            idx = i;
-            break;
-        }
-    CHECK(idx >= 0);
-    CHECK(game_play(&g, idx, END_LEFT));
+    CHECK(opens_only_with_double(&g) == 0);
     return 0;
 }
 

@@ -51,7 +51,7 @@ typedef struct {
     Board board;
     Seat turn;
     Seat opener;       /* quem abriu a mão atual */
-    Seat next_opener;  /* quem abre a próxima mão (não vale na primeira) */
+    Seat next_opener;  /* onde começa a procura por carroça para abrir a próxima mão */
     bool first_hand;   /* primeira mão da partida: abre com [6|6] */
     int passes;        /* passes seguidos */
     int score[2];
@@ -75,8 +75,12 @@ void game_new_match(Game *g, uint64_t seed);
 void game_restart_match(Game *g);
 /* Distribui e começa a próxima mão (depois de PHASE_HAND_OVER). */
 void game_next_hand(Game *g);
+/* Quem abre uma mão que não é a primeira: o primeiro com carroça na ordem
+   lead, parceiro do lead, seguinte ao lead, parceiro do seguinte. */
+Seat game_choose_opener(const Game *g, Seat lead);
 
-/* Pontas em que a peça encaixa agora. Mesa vazia: só END_LEFT. */
+/* Pontas em que a peça encaixa agora. Mesa vazia: só END_LEFT, e só [6|6] na
+   primeira mão ou carroça nas outras. */
 void game_fits(const Game *g, Tile t, bool *left, bool *right);
 bool game_has_move(const Game *g, Seat s);
 /* Joga hands[turn].tiles[index] na ponta pedida. Retorna false se não for válida. */
