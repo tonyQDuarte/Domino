@@ -13,10 +13,10 @@
 
 ## Handoff
 
-**Feature**: cpu-parceria-animacao
-**Where**: C1-C23 fechados; Verifier independente rodada 2: PASS (standard, 23/23, 10 falhas injetadas e mortas)
+**Feature**: abertura-carroca
+**Where**: plan aprovado (standard), checks escritos; construindo
 **In progress**: nada
-**Next step**: próxima feature a combinar com o usuário
+**Next step**: testes de C1-C9, depois implementação
 **Blockers**: nenhum
 **Uncommitted**: nada
-**Branch**: feat/cpu-parceria-animacao
+**Branch**: feat/abertura-carroca

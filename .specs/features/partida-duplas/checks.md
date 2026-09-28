@@ -108,9 +108,11 @@ Proof: `ctest --test-dir build -R "^hand_end_overlay$" --output-on-failure`
 
 - [x] **C29** - Na mão seguinte a uma batida, a vez começa com quem bateu, e uma peça diferente de `[6|6]` é aceita como abertura (AC 28)
 Proof: `ctest --test-dir build -R "^next_hand_winner_starts$" --output-on-failure`
+> Substituído por `abertura-carroca` (AC 5 e C9 de lá), a pedido do usuário em 2026-09-28: a mão seguinte abre com carroça, e quem bateu só abre se tiver uma. O teste foi reescrito para a regra nova.
 
 - [x] **C30** - Na mão seguinte a um tranque, a vez começa com quem abriu a mão trancada, e uma peça diferente de `[6|6]` é aceita como abertura (AC 29)
 Proof: `ctest --test-dir build -R "^next_hand_after_tranque$" --output-on-failure`
+> Substituído por `abertura-carroca` (AC 6, AC 7 e C9 de lá), a pedido do usuário em 2026-09-28: depois de um tranque, a abertura segue a ordem da carroça a partir da dupla que ganhou o ponto. O teste foi reescrito para a regra nova.
 
 - [x] **C31** - O texto do placar é `Nós <x> × <y> Eles` (`Nós 0 × 0 Eles` no início, `Nós 3 × 1 Eles` depois de +3 e +1) e ancora no canto superior esquerdo (AC 30)
 Proof: `ctest --test-dir build -R "^score_text_format$" --output-on-failure`
