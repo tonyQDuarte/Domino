@@ -12,84 +12,84 @@ Build e PATH como em `AGENTS.md`. Os testes novos ficam em `tests/test_parceria.
 
 ### S1 - A CPU joga pela dupla · 4 files · ~20 KB · ~5k
 
-- [ ] **C1** - Em 200 seeds, em cada vez de CPU ao longo da mão, trocar entre si as peças das outras três mãos (mantendo as quantidades) não muda a peça nem a ponta escolhidas por `cpu_choose` (AC 1)
+- [x] **C1** - Em 200 seeds, em cada vez de CPU ao longo da mão, trocar entre si as peças das outras três mãos (mantendo as quantidades) não muda a peça nem a ponta escolhidas por `cpu_choose` (AC 1)
 Proof: `ctest --test-dir build -R "^cpu_ignores_hidden_hands$" --output-on-failure`
 
-- [ ] **C2** - `cpu_decide` decide a partir de um `CpuView` montado à mão, sem nenhum `Game`, e `cpu_view_of` copia só a mão do próprio assento, as quantidades, as pontas e os passes (door 1, AC 1)
+- [x] **C2** - `cpu_decide` decide a partir de um `CpuView` montado à mão, sem nenhum `Game`, e `cpu_view_of` copia só a mão do próprio assento, as quantidades, as pontas e os passes (door 1, AC 1)
 Proof: `ctest --test-dir build -R "^cpu_decide_from_view_only$" --output-on-failure`
 
-- [ ] **C3** - Um passe com pontas 2/5 marca `lacks[assento][2]` e `lacks[assento][5]`, nenhum outro valor, e a marca continua depois de jogadas seguintes (AC 2)
+- [x] **C3** - Um passe com pontas 2/5 marca `lacks[assento][2]` e `lacks[assento][5]`, nenhum outro valor, e a marca continua depois de jogadas seguintes (AC 2)
 Proof: `ctest --test-dir build -R "^pass_records_lacks$" --output-on-failure`
 
-- [ ] **C4** - `game_next_hand` e `game_restart_match` começam a mão com todos os 28 `lacks` falsos (AC 3)
+- [x] **C4** - `game_next_hand` e `game_restart_match` começam a mão com todos os 28 `lacks` falsos (AC 3)
 Proof: `ctest --test-dir build -R "^new_hand_clears_lacks$" --output-on-failure`
 
-- [ ] **C5** - Modo parceiro (Norte com 4, Sul com 2, Sul passou no 3 e no 6), pontas 3/1, mão `[1|6]`,`[3|0]`: a CPU joga `[3|0]` na esquerda, e não `[1|6]`, que deixaria 3/6; se `[1|6]` for a única jogada, ela joga `[1|6]` (AC 4)
+- [x] **C5** - Modo parceiro (Norte com 4, Sul com 2, Sul passou no 3 e no 6), pontas 3/1, mão `[1|6]`,`[3|0]`: a CPU joga `[3|0]` na esquerda, e não `[1|6]`, que deixaria 3/6; se `[1|6]` for a única jogada, ela joga `[1|6]` (AC 4)
 Proof: `ctest --test-dir build -R "^cpu_partner_mode_avoids_blocking$" --output-on-failure`
 
-- [ ] **C6** - O mesmo cenário do C5 com o parceiro tendo 5 peças (mais) ou 4 (empate) fica em modo próprio, e a CPU joga `[1|6]` (AC 4, AC 6)
+- [x] **C6** - O mesmo cenário do C5 com o parceiro tendo 5 peças (mais) ou 4 (empate) fica em modo próprio, e a CPU joga `[1|6]` (AC 4, AC 6)
 Proof: `ctest --test-dir build -R "^cpu_self_mode_when_partner_not_fewer$" --output-on-failure`
 
-- [ ] **C7** - O adversário seguinte passou no 4 e no 2, pontas 4/5, mão `[5|2]`,`[5|6]`: em modo próprio a CPU joga `[5|2]` (deixa 4/2); em modo parceiro, com o parceiro também tendo passado no 4 e no 2, joga `[5|6]` (AC 4 vem antes do AC 5) (AC 5)
+- [x] **C7** - O adversário seguinte passou no 4 e no 2, pontas 4/5, mão `[5|2]`,`[5|6]`: em modo próprio a CPU joga `[5|2]` (deixa 4/2); em modo parceiro, com o parceiro também tendo passado no 4 e no 2, joga `[5|6]` (AC 4 vem antes do AC 5) (AC 5)
 Proof: `ctest --test-dir build -R "^cpu_prefers_opponent_pass$" --output-on-failure`
 
-- [ ] **C8** - Pontas 1/2, mão `[1|3]`,`[2|6]`,`[3|4]`, sem passes: em modo próprio a CPU joga `[1|3]` (sobram 2 peças que encaixam); em modo parceiro joga `[2|6]` (AC 6 só vale no modo próprio) (AC 6)
+- [x] **C8** - Pontas 1/2, mão `[1|3]`,`[2|6]`,`[3|4]`, sem passes: em modo próprio a CPU joga `[1|3]` (sobram 2 peças que encaixam); em modo parceiro joga `[2|6]` (AC 6 só vale no modo próprio) (AC 6)
 Proof: `ctest --test-dir build -R "^cpu_self_mode_keeps_own_moves$" --output-on-failure`
 
-- [ ] **C9** - O parceiro usado no modo parceiro é Norte→Sul, Leste→Oeste e Oeste→Leste; passes de um assento que não é o parceiro não ativam o AC 4 (AC 7)
+- [x] **C9** - O parceiro usado no modo parceiro é Norte→Sul, Leste→Oeste e Oeste→Leste; passes de um assento que não é o parceiro não ativam o AC 4 (AC 7)
 Proof: `ctest --test-dir build -R "^cpu_partner_pairs$" --output-on-failure`
 
-- [ ] **C10** - Com as regras empatadas, `cpu_decide` escolhe a maior soma, depois a carroça, depois a primeira da mão, e a ponta esquerda para peça que encaixa nas duas (AC 8)
+- [x] **C10** - Com as regras empatadas, `cpu_decide` escolhe a maior soma, depois a carroça, depois a primeira da mão, e a ponta esquerda para peça que encaixa nas duas (AC 8)
 Proof: `ctest --test-dir build -R "^cpu_tiebreak_like_before$" --output-on-failure`
 
 ### S2 - A peça desliza até a mesa · 4 files · ~25 KB · ~6k
 
-- [ ] **C11** - Com animações ligadas, depois de uma jogada há exatamente uma peça em voo: aos 0 ms o centro dela é o centro da peça de origem na mão (Sul e CPU), aos 175 ms está estritamente entre origem e destino, aos 349 ms a menos de 1 px do centro do lugar na linha, e aos 350 ms não há peça em voo (AC 9)
+- [x] **C11** - Com animações ligadas, depois de uma jogada há exatamente uma peça em voo: aos 0 ms o centro dela é o centro da peça de origem na mão (Sul e CPU), aos 175 ms está estritamente entre origem e destino, aos 349 ms a menos de 1 px do centro do lugar na linha, e aos 350 ms não há peça em voo (AC 9)
 Proof: `ctest --test-dir build -R "^slide_moves_hand_to_board$" --output-on-failure`
 
-- [ ] **C12** - Enquanto a peça desliza, `board_hidden` é o índice dela na linha; aos 350 ms volta a -1 (AC 10)
+- [x] **C12** - Enquanto a peça desliza, `board_hidden` é o índice dela na linha; aos 350 ms volta a -1 (AC 10)
 Proof: `ctest --test-dir build -R "^slide_hides_board_slot$" --output-on-failure`
 
-- [ ] **C13** - Depois de o Sul jogar, o Leste não joga aos 350 + 799 ms e jogou aos 350 + 800 ms; durante o deslize de uma peça do Oeste, com a vez já do Sul, um clique numa peça do Sul não muda nada, e depois do deslize o mesmo clique joga (AC 11)
+- [x] **C13** - Depois de o Sul jogar, o Leste não joga aos 350 + 799 ms e jogou aos 350 + 800 ms; durante o deslize de uma peça do Oeste, com a vez já do Sul, um clique numa peça do Sul não muda nada, e depois do deslize o mesmo clique joga (AC 11)
 Proof: `ctest --test-dir build -R "^slide_blocks_timer_and_clicks$" --output-on-failure`
 
 ### S3 - A distribuição é animada · 2 files · ~15 KB · ~4k
 
-- [ ] **C14** - Ao começar a mão com animações, a peça k (0..27) sai do centro da área da mesa aos 50·k ms para o assento k mod 4 (Sul, Leste, Norte, Oeste), chega ao centro do lugar dela na mão aos 50·k + 300 ms, e não há peça em voo aos 1650 ms (AC 12)
+- [x] **C14** - Ao começar a mão com animações, a peça k (0..27) sai do centro da área da mesa aos 50·k ms para o assento k mod 4 (Sul, Leste, Norte, Oeste), chega ao centro do lugar dela na mão aos 50·k + 300 ms, e não há peça em voo aos 1650 ms (AC 12)
 Proof: `ctest --test-dir build -R "^deal_animation_timing$" --output-on-failure`
 
-- [ ] **C15** - De 0 a 1700 ms, a cada 25 ms, `hand_shown[s]` é igual ao número de peças k com k mod 4 = s que já chegaram (50·k + 300 <= t) (AC 13)
+- [x] **C15** - De 0 a 1700 ms, a cada 25 ms, `hand_shown[s]` é igual ao número de peças k com k mod 4 = s que já chegaram (50·k + 300 <= t) (AC 13)
 Proof: `ctest --test-dir build -R "^deal_shows_arrived_only$" --output-on-failure`
 
-- [ ] **C16** - Durante a distribuição, um clique numa peça do Sul não joga, o Sul sem jogada não passa, e a CPU que abre não joga antes de 1650 + 800 ms; aos 1650 + 800 ms ela joga (AC 14)
+- [x] **C16** - Durante a distribuição, um clique numa peça do Sul não joga, o Sul sem jogada não passa, e a CPU que abre não joga antes de 1650 + 800 ms; aos 1650 + 800 ms ela joga (AC 14)
 Proof: `ctest --test-dir build -R "^deal_blocks_play$" --output-on-failure`
 
 ### S4 - As mãos viram no fim · 2 files · ~15 KB · ~4k
 
-- [ ] **C17** - Numa batida do Sul, a virada começa aos 350 ms (fim do deslize): `flip_scale` vale 1 aos 350 ms, menos de 0,05 aos 550 ms, e 1 aos 750 ms; as CPUs aparecem de costas até os 550 ms e de face a partir daí. Num tranque, a virada começa na hora, sem deslize (AC 15)
+- [x] **C17** - Numa batida do Sul, a virada começa aos 350 ms (fim do deslize): `flip_scale` vale 1 aos 350 ms, menos de 0,05 aos 550 ms, e 1 aos 750 ms; as CPUs aparecem de costas até os 550 ms e de face a partir daí. Num tranque, a virada começa na hora, sem deslize (AC 15)
 Proof: `ctest --test-dir build -R "^reveal_flips_cpu_hands$" --output-on-failure`
 
-- [ ] **C18** - `overlay_visible` é falso durante o deslize e a virada, tanto no fim de mão quanto no fim de partida, e passa a verdadeiro aos 750 ms (AC 16)
+- [x] **C18** - `overlay_visible` é falso durante o deslize e a virada, tanto no fim de mão quanto no fim de partida, e passa a verdadeiro aos 750 ms (AC 16)
 Proof: `ctest --test-dir build -R "^reveal_hides_overlay$" --output-on-failure`
 
-- [ ] **C19** - Um clique, ou um Enter, durante a virada deixa `overlay_visible` verdadeiro, `flip_scale` 1 e a fase ainda `PHASE_HAND_OVER`; o clique ou Enter seguinte começa a próxima mão (AC 17)
+- [x] **C19** - Um clique, ou um Enter, durante a virada deixa `overlay_visible` verdadeiro, `flip_scale` 1 e a fase ainda `PHASE_HAND_OVER`; o clique ou Enter seguinte começa a próxima mão (AC 17)
 Proof: `ctest --test-dir build -R "^reveal_skip_on_input$" --output-on-failure`
 
 ### S5 - Os destaques pulsam · 2 files · ~10 KB · ~3k
 
-- [ ] **C20** - Com pontas destacadas e animações ligadas, `pulse` amostrado a cada 1 ms em 800 ms tem mínimo em [0,35, 0,36] e máximo em [0,84, 0,85], e `pulse(t) == pulse(t + 800)` (AC 18)
+- [x] **C20** - Com pontas destacadas e animações ligadas, `pulse` amostrado a cada 1 ms em 800 ms tem mínimo em [0,35, 0,36] e máximo em [0,84, 0,85], e `pulse(t) == pulse(t + 800)` (AC 18)
 Proof: `ctest --test-dir build -R "^pulse_period_800$" --output-on-failure`
 
 ### S6 - O que já existe continua igual · 3 files · ~10 KB · ~3k
 
-- [ ] **C21** - Os 40 testes de `partida-duplas` (label `partida-duplas`) passam, e os arquivos `tests/test_core.c`, `tests/test_process.c`, `tests/test_window.c`, `tests/harness.h`, `tests/fixtures.h` e `tests/core_has_no_raylib.cmake` não mudaram desde `7ab288b` (AC 19)
+- [x] **C21** - Os 40 testes de `partida-duplas` (label `partida-duplas`) passam, e os arquivos `tests/test_core.c`, `tests/test_process.c`, `tests/test_window.c`, `tests/harness.h`, `tests/fixtures.h` e `tests/core_has_no_raylib.cmake` não mudaram desde `7ab288b` (AC 19)
 Proof: `ctest --test-dir build -L partida-duplas --output-on-failure`
 Proof: `git diff --exit-code 7ab288b -- tests/test_core.c tests/test_process.c tests/test_window.c tests/harness.h tests/fixtures.h tests/core_has_no_raylib.cmake`
 
-- [ ] **C22** - No primeiro quadro de `app_run`, o controlador está com as animações ligadas e a distribuição em andamento (AC 20, door 2)
+- [x] **C22** - No primeiro quadro de `app_run`, o controlador está com as animações ligadas e a distribuição em andamento (AC 20, door 2)
 Proof: `ctest --test-dir build -R "^app_animations_on$" --output-on-failure`
 
-- [ ] **C23** - Depois de `ctl_init`, as animações estão desligadas: nenhuma peça em voo, `hand_shown` igual à quantidade na mão, e numa batida o quadro de resultado aparece na hora (door 2, AC 19)
+- [x] **C23** - Depois de `ctl_init`, as animações estão desligadas: nenhuma peça em voo, `hand_shown` igual à quantidade na mão, e numa batida o quadro de resultado aparece na hora (door 2, AC 19)
 Proof: `ctest --test-dir build -R "^animations_off_by_default$" --output-on-failure`
 
 ## Coverage

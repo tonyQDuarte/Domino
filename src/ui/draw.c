@@ -72,6 +72,8 @@ static void draw_board(const Controller *c, const View *v)
     TileSlot slots[TILE_COUNT];
     layout_board(b, slots);
     for (int i = 0; i < b->count; i++) {
+        if (i == v->board_hidden)
+            continue;
         PlacedTile p = b->line[i];
         int first = slots[i].flipped ? p.right : p.left;
         int second = slots[i].flipped ? p.left : p.right;
@@ -81,8 +83,8 @@ static void draw_board(const Controller *c, const View *v)
     for (int e = END_LEFT; e <= END_RIGHT; e++)
         if (v->highlight_end[e]) {
             RectF t = layout_end_target(b, (End)e);
-            DrawRectangleRec(rl(t), Fade(YELLOW, 0.45f));
-            DrawRectangleLinesEx(rl(t), 2, YELLOW);
+            DrawRectangleRec(rl(t), Fade(YELLOW, v->pulse));
+            DrawRectangleLinesEx(rl(t), 2, Fade(YELLOW, v->pulse + 0.15f));
         }
 }
 
@@ -92,22 +94,29 @@ static void draw_hands(const Controller *c, const View *v)
     RectF r[HAND_SIZE];
     const Hand *south = &g->hands[SEAT_SOUTH];
     layout_south_hand(south->count, r);
-    for (int i = 0; i < south->count; i++) {
+    for (int i = 0; i < v->hand_shown[SEAT_SOUTH]; i++) {
         bool sel = c->choosing && c->choosing_index == i && g->phase == PHASE_PLAYING;
         RectF rr = r[i];
         if (sel) rr.y -= 12;
-        draw_tile(rr, true, south->tiles[i].a, south->tiles[i].b, sel);
+        draw_tile(rr, true, south->tiles[i].a, south->tiles[i].b, false);
+        if (sel)
+            DrawRectangleRoundedLinesEx(rl(rr), 0.2f, 6, 3, Fade(YELLOW, v->pulse + 0.15f));
     }
     const Seat cpus[] = {SEAT_NORTH, SEAT_EAST, SEAT_WEST};
     for (int k = 0; k < 3; k++) {
         Seat s = cpus[k];
         const Hand *h = &g->hands[s];
         layout_cpu_row(s, h->count, r);
-        for (int i = 0; i < h->count; i++) {
+        for (int i = 0; i < v->hand_shown[s]; i++) {
+            RectF ri = r[i];
+            ri.x += ri.w * (1 - v->flip_scale) / 2;
+            ri.w *= v->flip_scale;
+            if (ri.w < 1)
+                continue;
             if (v->face_up[s])
-                draw_tile(r[i], s == SEAT_NORTH, h->tiles[i].a, h->tiles[i].b, false);
+                draw_tile(ri, s == SEAT_NORTH, h->tiles[i].a, h->tiles[i].b, false);
             else
-                draw_back(r[i]);
+                draw_back(ri);
         }
     }
 }
@@ -143,6 +152,13 @@ void draw_frame(const Controller *c, Font font)
     text(font, v.score_text, v.score_x, v.score_y, 28, RAYWHITE);
     if (v.message_visible)
         text_centered(font, v.message, SCREEN_W / 2.0f, 565, 26, RAYWHITE);
-    if (v.phase != PHASE_PLAYING)
+    for (int i = 0; i < v.flying_count; i++) {
+        const Flying *f = &v.flying[i];
+        if (f->face_up)
+            draw_tile(f->rect, f->vertical, f->first, f->second, false);
+        else
+            draw_back(f->rect);
+    }
+    if (v.overlay_visible)
         draw_overlay(&v, font);
 }

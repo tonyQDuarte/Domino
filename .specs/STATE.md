@@ -14,9 +14,9 @@
 ## Handoff
 
 **Feature**: cpu-parceria-animacao
-**Where**: plan aprovado (standard), checks escritos; construindo
+**Where**: C1-C23 fechados; aguardando o Verifier
 **In progress**: nada
-**Next step**: testes de C1-C23, depois implementação
+**Next step**: Verifier independente (standard)
 **Blockers**: nenhum
 **Uncommitted**: nada
-**Branch**: feat/partida-duplas
+**Branch**: feat/cpu-parceria-animacao

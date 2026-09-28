@@ -61,6 +61,7 @@ typedef struct {
     int result_points;
     int result_team;   /* -1 quando ninguém pontua */
     uint64_t rng;
+    bool lacks[SEAT_COUNT][7]; /* valores em que cada assento já passou nesta mão */
 } Game;
 
 bool tile_is_double(Tile t);
@@ -83,7 +84,21 @@ bool game_play(Game *g, int index, End end);
 /* Passa a vez do jogador atual. */
 void game_pass(Game *g);
 
-/* CPU: escolhe a jogada do assento da vez. Retorna false se não há jogada. */
+/* O que uma CPU pode ver: a própria mão, as pontas, as quantidades e os passes. */
+typedef struct {
+    Hand own;
+    Seat seat;
+    int counts[SEAT_COUNT];
+    bool lacks[SEAT_COUNT][7];
+    bool empty;
+    uint8_t left, right;
+    bool first_hand;
+} CpuView;
+
+CpuView cpu_view_of(const Game *g, Seat s);
+/* Decide só pelo CpuView. Retorna false se não há jogada. */
+bool cpu_decide(const CpuView *v, int *index, End *end);
+/* CPU: escolhe a jogada do assento da vez (monta o CpuView e chama cpu_decide). */
 bool cpu_choose(const Game *g, int *index, End *end);
 
 #endif

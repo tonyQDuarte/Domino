@@ -68,6 +68,7 @@ static void start_hand(Game *g)
     g->result = RESULT_NONE;
     g->result_points = 0;
     g->result_team = -1;
+    memset(g->lacks, 0, sizeof g->lacks);
 }
 
 void game_restart_match(Game *g)
@@ -191,6 +192,10 @@ void game_pass(Game *g)
 {
     if (g->phase != PHASE_PLAYING)
         return;
+    if (g->board.count > 0) {
+        g->lacks[g->turn][g->board.line[0].left] = true;
+        g->lacks[g->turn][g->board.line[g->board.count - 1].right] = true;
+    }
     g->passes++;
     if (g->passes >= SEAT_COUNT) {
         int us = hand_points(&g->hands[SEAT_SOUTH]) + hand_points(&g->hands[SEAT_NORTH]);

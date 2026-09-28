@@ -38,6 +38,7 @@ int app_run(const AppOptions *opt)
 
     Controller c;
     ctl_init(&c, opt->seed);
+    ctl_set_animations(&c, true);
     for (int frame = 0; !WindowShouldClose(); frame++) {
         if (opt->max_frames > 0 && frame >= opt->max_frames)
             break;
@@ -48,6 +49,9 @@ int app_run(const AppOptions *opt)
         if (IsKeyPressed(KEY_ENTER) || IsKeyPressed(KEY_KP_ENTER))
             ctl_enter(&c);
         ctl_update(&c, frame == 0 ? 0 : GetFrameTime() * 1000.0);
+
+        if (frame == 0 && opt->on_state)
+            opt->on_state(&c, opt->user);
 
         BeginDrawing();
         draw_frame(&c, font);

@@ -16,6 +16,7 @@ add_library(domino_core STATIC
   src/core/controller.c
   src/core/cli.c)
 target_include_directories(domino_core PUBLIC src/core)
+target_link_libraries(domino_core PUBLIC m)
 
 find_package(raylib REQUIRED)
 
@@ -56,16 +57,42 @@ foreach(t
     next_hand_after_tranque score_text_format match_end_message new_match_resets
     layout_first_tile_centered layout_within_table layout_doubles_perpendicular)
   add_test(NAME ${t} COMMAND test_core ${t})
+  set_tests_properties(${t} PROPERTIES LABELS partida-duplas)
 endforeach()
 
 foreach(t window_table_color window_fail_exits_1)
   add_test(NAME ${t} COMMAND test_window ${t} WORKING_DIRECTORY $<TARGET_FILE_DIR:domino>)
+  set_tests_properties(${t} PROPERTIES LABELS partida-duplas)
 endforeach()
 
 foreach(t cli_bad_args_exit_2 cli_window_title_and_size cli_close_exits_0)
   add_test(NAME ${t} COMMAND test_process ${t} $<TARGET_FILE:domino>)
+  set_tests_properties(${t} PROPERTIES LABELS partida-duplas)
 endforeach()
 
 add_test(NAME core_has_no_raylib
   COMMAND ${CMAKE_COMMAND} -DCORE_DIR=${CMAKE_SOURCE_DIR}/src/core
     -P ${CMAKE_SOURCE_DIR}/tests/core_has_no_raylib.cmake)
+set_tests_properties(core_has_no_raylib PROPERTIES LABELS partida-duplas)
+
+# cpu-parceria-animacao
+add_executable(test_parceria tests/test_parceria.c)
+target_link_libraries(test_parceria PRIVATE domino_core m)
+
+foreach(t
+    cpu_ignores_hidden_hands cpu_decide_from_view_only pass_records_lacks new_hand_clears_lacks
+    cpu_partner_mode_avoids_blocking cpu_self_mode_when_partner_not_fewer cpu_prefers_opponent_pass
+    cpu_self_mode_keeps_own_moves cpu_partner_pairs cpu_tiebreak_like_before
+    slide_moves_hand_to_board slide_hides_board_slot slide_blocks_timer_and_clicks
+    deal_animation_timing deal_shows_arrived_only deal_blocks_play
+    reveal_flips_cpu_hands reveal_hides_overlay reveal_skip_on_input
+    pulse_period_800 animations_off_by_default)
+  add_test(NAME ${t} COMMAND test_parceria ${t})
+  set_tests_properties(${t} PROPERTIES LABELS cpu-parceria-animacao)
+endforeach()
+
+add_executable(test_app_anim tests/test_app_anim.c)
+target_link_libraries(test_app_anim PRIVATE domino_app)
+add_test(NAME app_animations_on COMMAND test_app_anim app_animations_on
+  WORKING_DIRECTORY $<TARGET_FILE_DIR:domino>)
+set_tests_properties(app_animations_on PROPERTIES LABELS cpu-parceria-animacao)
