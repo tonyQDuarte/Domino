@@ -154,7 +154,7 @@ As pontas destacadas e a peça selecionada pulsam.
 | Curva do movimento | ease-out cúbica no deslize e na distribuição | Começa rápido e chega suave, que é o costume em jogos de cartas | n |
 | Clique durante a distribuição | é ignorado, não pula a animação | São 1,65 s, e pular deixaria a mão aparecer pela metade | n |
 | Botão `Nova partida` antes de terminar a virada | já funciona se clicado na área dele | É o comportamento atual (AC 32 de `partida-duplas`), e o AC 19 exige mantê-lo | n |
-| Peça em voo | desenhada com a face para cima e com a orientação do lugar de destino | A peça vai ficar visível na mesa de qualquer jeito | n |
+| Peça em voo | no deslize, de face e com a orientação e os valores do lugar de destino; na distribuição, de costas | A peça jogada vai ficar visível na mesa de qualquer jeito; as peças distribuídas ainda não são de ninguém à vista | n |
 
 **Open questions:** none - all resolved or logged above.
 

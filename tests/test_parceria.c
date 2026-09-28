@@ -50,6 +50,8 @@ static void click_south(Controller *c, int index)
     ctl_click(c, cx(r[index]), cy(r[index]));
 }
 
+static void south_bate(Controller *c, int us_score);
+
 /* Controlador com animações ligadas e a mesa pronta (sem distribuição em andamento). */
 static void anim_setup(Controller *c, int left, int right, Seat turn)
 {
@@ -244,6 +246,15 @@ static int cpu_prefers_opponent_pass(void)
     CHECK(cpu_decide(&u, &idx, &end));
     CHECK(idx == 1);
 
+    /* modo próprio: AC 5 vem antes do AC 6. [5|2] faz o Oeste passar (0 peças minhas encaixam
+       depois); [5|6] deixaria 1 peça minha encaixando, mas não faz ninguém passar */
+    Tile own2[] = {T(5, 2), T(5, 6), T(6, 1)};
+    CpuView x = view_for(SEAT_NORTH, 3, own2, 7, 4, 5);
+    x.lacks[SEAT_WEST][4] = x.lacks[SEAT_WEST][2] = true;
+    CHECK(cpu_decide(&x, &idx, &end));
+    CHECK(idx == 0);
+    CHECK(end == END_RIGHT);
+
     /* modo parceiro, com o parceiro também sem 4 e 2: AC 4 vem antes */
     CpuView w = view_for(SEAT_NORTH, 3, own, 2, 4, 5);
     w.lacks[SEAT_WEST][4] = w.lacks[SEAT_WEST][2] = true;
@@ -350,6 +361,13 @@ static int slide_moves_hand_to_board(void)
     float to_dst = dist(cx(v.flying[0].rect), cy(v.flying[0].rect), cx(dst), cy(dst));
     float to_src = dist(cx(v.flying[0].rect), cy(v.flying[0].rect), cx(src[0]), cy(src[0]));
     CHECK(to_dst > 0.5f && to_src > 0.5f && to_dst < total && to_src < total);
+    /* ease-out cúbica: aos 175 ms (metade do tempo) percorreu 87,5% do caminho */
+    CHECK(fabsf(cx(v.flying[0].rect) - (cx(src[0]) + 0.875f * (cx(dst) - cx(src[0])))) < 0.5f);
+    CHECK(fabsf(cy(v.flying[0].rect) - (cy(src[0]) + 0.875f * (cy(dst) - cy(src[0])))) < 0.5f);
+    /* a peça voa de face, com a orientação e os valores do lugar de destino */
+    CHECK(v.flying[0].face_up);
+    CHECK(v.flying[0].vertical == slots[1].vertical);
+    CHECK(v.flying[0].first == 3 && v.flying[0].second == 5);
     ctl_update(&c, 174);
     ctl_view(&c, &v);
     CHECK(v.flying_count == 1);
@@ -370,6 +388,8 @@ static int slide_moves_hand_to_board(void)
     ctl_view(&c, &v);
     CHECK(v.flying_count == 1);
     CHECK(dist(cx(v.flying[0].rect), cy(v.flying[0].rect), cx(row[0]), cy(row[0])) < 0.5f);
+    CHECK(v.flying[0].face_up);
+    CHECK(v.flying[0].first == 4 && v.flying[0].second == 3);
     ctl_update(&c, 349);
     ctl_view(&c, &v);
     CHECK(dist(cx(v.flying[0].rect), cy(v.flying[0].rect), cx(slots[0].rect), cy(slots[0].rect)) < 1.0f);
@@ -505,6 +525,36 @@ static int deal_animation_timing(void)
     CHECK(now == 1650);
     ctl_view(&d, &v);
     CHECK(v.flying_count == 0);
+
+    /* na distribuição as peças voam de costas */
+    Controller e;
+    dealing(&e, 1);
+    ctl_update(&e, 100);
+    ctl_view(&e, &v);
+    CHECK(v.flying_count >= 1);
+    for (int i = 0; i < v.flying_count; i++)
+        CHECK(!v.flying[i].face_up);
+
+    /* a distribuição também começa na mão seguinte e na Nova partida */
+    for (int match = 0; match < 2; match++) {
+        Controller m;
+        south_bate(&m, match ? 5 : 0);
+        ctl_update(&m, 350); /* deslize */
+        ctl_update(&m, 400); /* virada */
+        CHECK(m.anim == ANIM_NONE);
+        if (match)
+            ctl_click(&m, cx(layout_new_match_button()), cy(layout_new_match_button()));
+        else
+            ctl_click(&m, 10, 10);
+        CHECK(m.game.phase == PHASE_PLAYING);
+        CHECK(m.anim == ANIM_DEAL);
+        ctl_view(&m, &v);
+        CHECK(v.flying_count == 1);
+        CHECK(v.flying[0].id == 0);
+        CHECK(dist(cx(v.flying[0].rect), cy(v.flying[0].rect), cx(t), cy(t)) < 0.5f);
+        for (int s = 0; s < SEAT_COUNT; s++)
+            CHECK(v.hand_shown[s] == 0);
+    }
     return 0;
 }
 
