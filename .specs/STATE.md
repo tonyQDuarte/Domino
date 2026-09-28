@@ -12,9 +12,9 @@
 ## Handoff
 
 **Feature**: partida-duplas
-**Where**: plan.md escrito, aguardando revisão do usuário
+**Where**: C1-C38 fechados em 0223dbd; Verifier independente: PASS (light, 38/38)
 **In progress**: nada
-**Next step**: com o plano aprovado, escrever `checks.md`
-**Blockers**: toolchain MSYS2 ainda não instalado
-**Uncommitted**: `.specs/` (o diretório ainda não é repositório git)
-**Branch**: nenhum
+**Next step**: próxima feature a combinar com o usuário
+**Blockers**: nenhum
+**Uncommitted**: nada
+**Branch**: feat/partida-duplas
