@@ -150,3 +150,6 @@ add_executable(test_menu_cli tests/test_menu_cli.c)
 add_test(NAME cli_menu_types_and_saves COMMAND test_menu_cli cli_menu_types_and_saves $<TARGET_FILE:domino>
   WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
 set_tests_properties(cli_menu_types_and_saves PROPERTIES LABELS tela-inicial)
+add_test(NAME cli_menu_backspace_and_clicks COMMAND test_menu_cli cli_menu_backspace_and_clicks $<TARGET_FILE:domino>
+  WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
+set_tests_properties(cli_menu_backspace_and_clicks PROPERTIES LABELS tela-inicial)

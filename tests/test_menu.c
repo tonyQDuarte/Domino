@@ -220,8 +220,10 @@ static int name_load_rejects_invalid(void)
     struct {
         const char *bytes;
         size_t n;
-    } bad[] = {{"", 0}, {"Ana\n", 4}, {"A\tB", 3}, {"\x80", 1}, {"\xC4\x80", 2}};
-    for (int i = 0; i < 5; i++) {
+    } bad[] = {{"", 0},          {"Ana\n", 4},       {"A\tB", 3},       {"\x80", 1},
+               {"\xC4\x80", 2},  {"A\x7F", 2} /* 127 */, {"A\xC2\x80", 3} /* 128 */,
+               {"A\xC2\x9F", 3} /* 159 */};
+    for (int i = 0; i < 8; i++) {
         write_bytes("tmp_menu/ruim.txt", bad[i].bytes, bad[i].n);
         strcpy(out, "x");
         if (name_load("tmp_menu/ruim.txt", out) || out[0] != '\0') {

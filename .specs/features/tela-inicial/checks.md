@@ -25,6 +25,7 @@ Proof: `ctest --test-dir build -R "^menu_type_filter$" --output-on-failure`
 
 - [x] **C3** - Backspace em `Zé` deixa `Z` (apaga os 2 bytes do `é`); outro Backspace deixa o nome vazio; Backspace com o nome vazio não muda nada (AC 3)
 Proof: `ctest --test-dir build -R "^menu_backspace_utf8$" --output-on-failure`
+> Reforço da rodada 1 do Verifier: prova extra no `domino.exe` real, com tecla e clique de verdade (o gancho `menu_input` pula a leitura do teclado e do mouse): `ctest --test-dir build -R "^cli_menu_backspace_and_clicks  --output-on-failure`
 
 - [x] **C4** - Com o nome vazio ou `   `, `menu_play_enabled` é falso, e tanto o clique no centro de `Jogar` quanto o Enter devolvem `MENU_NONE` (AC 4)
 Proof: `ctest --test-dir build -R "^menu_play_disabled_when_blank$" --output-on-failure`
@@ -32,10 +33,12 @@ Proof: `ctest --test-dir build -R "^menu_play_disabled_when_blank$" --output-on-
 - [x] **C5** - Com o nome `  Ana  `, o clique em `Jogar` e o Enter devolvem `MENU_PLAY` e o nome usado é `Ana`; na `app_run`, a ação `MENU_PLAY` começa a partida com as animações ligadas, a distribuição em andamento e o nome `Ana` no controlador (AC 5)
 Proof: `ctest --test-dir build -R "^menu_play_trims_name$" --output-on-failure`
 Proof: `ctest --test-dir build -R "^app_menu_play_starts_game$" --output-on-failure`
+> Reforço da rodada 1 do Verifier: prova extra no `domino.exe` real, com tecla e clique de verdade (o gancho `menu_input` pula a leitura do teclado e do mouse): `ctest --test-dir build -R "^cli_menu_backspace_and_clicks  --output-on-failure`
 
 - [x] **C6** - O clique no centro de `Sair` devolve `MENU_QUIT`, com nome vazio ou não; na `app_run`, a ação `MENU_QUIT` termina o laço e retorna 0 sem começar a partida (AC 6)
 Proof: `ctest --test-dir build -R "^menu_quit_click$" --output-on-failure`
 Proof: `ctest --test-dir build -R "^app_menu_quit_returns_0$" --output-on-failure`
+> Reforço da rodada 1 do Verifier: prova extra no `domino.exe` real, com tecla e clique de verdade (o gancho `menu_input` pula a leitura do teclado e do mouse): `ctest --test-dir build -R "^cli_menu_backspace_and_clicks  --output-on-failure`
 
 - [x] **C7** - Depois de `ctl_set_player_name(c, "Ana")`, a `View` traz `Ana`; o retângulo de `layout_player_name` fica centrado em x = 640, entre a área da mesa (y >= 560) e a mão do Sul (y + h <= 605), e não se sobrepõe ao retângulo de `layout_message` (AC 7)
 Proof: `ctest --test-dir build -R "^player_name_above_south_hand$" --output-on-failure`
@@ -52,6 +55,7 @@ Proof: `ctest --test-dir build -R "^app_menu_prefills_name$" --output-on-failure
 
 - [x] **C10** - `name_load` devolve nome vazio para arquivo ausente, arquivo vazio, `Ana\n`, `A\tB`, o byte solto `80` e `Ā` (`C4 80`, código 256); e para 20 letras devolve as 16 primeiras (AC 10, door 1)
 Proof: `ctest --test-dir build -R "^name_load_rejects_invalid$" --output-on-failure`
+> Reforço da rodada 1 do Verifier: o mesmo teste agora também recusa arquivos com os códigos 127 (`7F`), 128 (`C2 80`) e 159 (`C2 9F`).
 
 - [x] **C11** - Com o caminho do arquivo dentro de uma "pasta" que na verdade é um arquivo, `name_save` retorna falso e a `app_run` começa a partida mesmo assim depois do `MENU_PLAY`, retornando 0 (AC 11)
 Proof: `ctest --test-dir build -R "^app_menu_save_failure_still_plays$" --output-on-failure`
