@@ -14,10 +14,11 @@
 
 ## Handoff
 
-**Feature**: tela-inicial
-**Where**: C1-C13 fechados; Verifier independente rodada 2: PASS (standard, 13/13, 6 falhas injetadas e mortas)
-**In progress**: nada
-**Next step**: o usuário testa a tela inicial; push do branch quando ele pedir
+**Feature**: bots-parceiros
+**Where**: plan.md escrito, aguardando revisão e escolha do perfil pelo usuário
+**In progress**: nada (nenhum código ainda)
+**Next step**: com o plano aprovado, escrever checks.md, depois testes e código; Verifier; merge no main só com PASS e o ok do usuário
 **Blockers**: nenhum
 **Uncommitted**: nada
-**Branch**: feat/tela-inicial
+**Branch**: feat/bots-parceiros (saiu do main em v1.0.0, 8419202)
+**Ao continuar num chat novo**: ler .specs/PROJECT.md, depois este arquivo, depois .specs/features/bots-parceiros/plan.md
