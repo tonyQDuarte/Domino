@@ -16,10 +16,10 @@
 ## Handoff
 
 **Feature**: bots-parceiros
-**Where**: verificada (standard), PASS na rodada 3 do Verifier; aguardando o ok do usuário para o merge no main
+**Where**: concluída: merge no main e tag v1.1.0
 **In progress**: nada
-**Next step**: com o ok do usuário, merge de feat/bots-parceiros no main (o push é feito pelo usuário no terminal dele)
+**Next step**: próxima feature a combinar com o usuário
 **Blockers**: nenhum
 **Uncommitted**: nada
-**Branch**: feat/bots-parceiros (saiu do main em v1.0.0, 8419202)
+**Branch**: main
 **Observação**: `cli_menu_backspace_and_clicks` (de tela-inicial) é instável, cerca de 2 falhas em 11 rodadas; candidato a uma correção separada

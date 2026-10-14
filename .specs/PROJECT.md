@@ -10,7 +10,7 @@ Jogo de dominó brasileiro em duplas, em C com raylib, para Windows. Mesa verde,
 
 - Repositório: https://github.com/tonyQDuarte/Domino (público, licença Apache-2.0)
 - Pasta local: `D:\Dev\Git\Domino`
-- Versão publicada: tag `v1.0.0` no `main` (commit `8419202`)
+- Versão publicada: tag `v1.1.0` no `main` (bots-parceiros); anterior `v1.0.0` (`8419202`)
 
 ## Como compilar e testar
 
@@ -58,7 +58,7 @@ rodam: as checagens deles são feitas lendo os artefatos.
 | `abertura-carroca` | abertura com carroça e ordem de abertura | verificada (standard), no `main` |
 | `pecas-de-fora` | 6 por jogador, 4 de fora | verificada (standard), no `main` |
 | `tela-inicial` | tela inicial com nome salvo | verificada (standard), no `main`, tag `v1.0.0` |
-| `bots-parceiros` | 6 bots com nome e estilo, escolha do parceiro | verificada (standard), no branch `feat/bots-parceiros`, aguardando merge |
+| `bots-parceiros` | 6 bots com nome e estilo, escolha do parceiro | verificada (standard), no `main`, tag `v1.1.0` |
 
 Algumas regras antigas foram substituídas por features novas a pedido do usuário; os `checks.md`
 antigos têm notas `> Substituído por ...` nos pontos afetados, em vez de linhas apagadas.
