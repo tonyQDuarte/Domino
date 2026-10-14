@@ -25,62 +25,63 @@ Cenários usados nas provas de S1 (CPU no Norte, parceiro Sul, seguinte Oeste):
 
 ### S1 - Seis bots com estilos diferentes · 5 files · ~16 KB · ~4k
 
-- [ ] **C1** - `BOT_COUNT` é 6 e `BOTS[0..5]` tem, nesta ordem, os nomes `Seu Paulo`, `Neca`, `Audi`, `Seu Leo`, `Guede`, `Manezinho`, os textos `Fidelidade total`, `Colaboração`, `Equilíbrio`, `Bloqueio`, `Jogo próprio`, `Descarrego` e os estilos `STYLE_SEU_PAULO`, `STYLE_NECA`, `STYLE_AUDI`, `STYLE_SEU_LEO`, `STYLE_GUEDE`, `STYLE_MANEZINHO`; os 6 estilos são diferentes entre si (AC 1)
+- [x] **C1** - `BOT_COUNT` é 6 e `BOTS[0..5]` tem, nesta ordem, os nomes `Seu Paulo`, `Neca`, `Audi`, `Seu Leo`, `Guede`, `Manezinho`, os textos `Fidelidade total`, `Colaboração`, `Equilíbrio`, `Bloqueio`, `Jogo próprio`, `Descarrego` e os estilos `STYLE_SEU_PAULO`, `STYLE_NECA`, `STYLE_AUDI`, `STYLE_SEU_LEO`, `STYLE_GUEDE`, `STYLE_MANEZINHO`; os 6 estilos são diferentes entre si (AC 1)
 Proof: `ctest --test-dir build -R "^bots_table$" --output-on-failure`
 
-- [ ] **C2** - Com `STYLE_SEU_PAULO`, no cenário P, a CPU joga `[3|0]` com o parceiro tendo 2, 4 e 5 peças (ela tem 4) (AC 2)
+- [x] **C2** - Com `STYLE_SEU_PAULO`, no cenário P, a CPU joga `[3|0]` com o parceiro tendo 2, 4 e 5 peças (ela tem 4) (AC 2)
 Proof: `ctest --test-dir build -R "^style_seu_paulo_always_partner$" --output-on-failure`
 
-- [ ] **C3** - Com `STYLE_NECA`, no cenário P, a CPU joga `[3|0]` com o parceiro tendo 2 e 4 peças e `[1|6]` com 5 (AC 3)
+- [x] **C3** - Com `STYLE_NECA`, no cenário P, a CPU joga `[3|0]` com o parceiro tendo 2 e 4 peças e `[1|6]` com 5 (AC 3)
 Proof: `ctest --test-dir build -R "^style_neca_partner_when_not_more$" --output-on-failure`
 
-- [ ] **C4** - `STYLE_AUDI` vale 0; com ele, no cenário P, a CPU joga `[3|0]` com o parceiro tendo 2 peças e `[1|6]` com 4 e 5; no cenário L joga `[5|6]`; no cenário J joga `[1|3]` na esquerda (AC 4, door 1)
+- [x] **C4** - `STYLE_AUDI` vale 0; com ele, no cenário P, a CPU joga `[3|0]` com o parceiro tendo 2 peças e `[1|6]` com 4 e 5; no cenário L joga `[5|6]`; no cenário J joga `[1|3]` na esquerda (AC 4, door 1)
 Proof: `ctest --test-dir build -R "^style_audi_is_current_rule$" --output-on-failure`
 
-- [ ] **C5** - Com `STYLE_SEU_LEO`, no cenário L a CPU joga `[5|2]`; no cenário P joga `[3|0]` com o parceiro tendo 2 peças e `[1|6]` com 4 (AC 5)
+- [x] **C5** - Com `STYLE_SEU_LEO`, no cenário L a CPU joga `[5|2]`; no cenário P joga `[3|0]` com o parceiro tendo 2 peças e `[1|6]` com 4 (AC 5)
 Proof: `ctest --test-dir build -R "^style_seu_leo_blocks_first$" --output-on-failure`
 
-- [ ] **C6** - Com `STYLE_GUEDE`, no cenário P a CPU joga `[1|6]` com o parceiro tendo 2 peças; no cenário L joga `[5|2]`; no cenário J joga `[1|3]` na esquerda (AC 6)
+- [x] **C6** - Com `STYLE_GUEDE`, no cenário P a CPU joga `[1|6]` com o parceiro tendo 2 peças; no cenário L joga `[5|2]`; no cenário J joga `[1|3]` na esquerda (AC 6)
 Proof: `ctest --test-dir build -R "^style_guede_never_partner$" --output-on-failure`
 
-- [ ] **C7** - Com `STYLE_MANEZINHO`, no cenário P a CPU joga `[1|6]` com o parceiro tendo 2 peças; no cenário L joga `[5|6]`; no cenário J joga `[2|6]` na direita (AC 7)
+- [x] **C7** - Com `STYLE_MANEZINHO`, no cenário P a CPU joga `[1|6]` com o parceiro tendo 2 peças; no cenário L joga `[5|6]`; no cenário J joga `[2|6]` na direita (AC 7)
 Proof: `ctest --test-dir build -R "^style_manezinho_tiebreak_only$" --output-on-failure`
 
-- [ ] **C8** - Para cada um dos 6 estilos, em 100 partidas (seeds 0..99) com `Game.styles` de Leste, Norte e Oeste naquele estilo: `cpu_view_of(g, s).style == g->styles[s]`, e em cada vez de CPU, embaralhar as peças das mãos dos outros 3 assentos e as de fora (mantendo as quantidades) não muda o índice nem a ponta escolhidos por `cpu_choose` (AC 8, door 1)
+- [x] **C8** - Para cada um dos 6 estilos, em 100 partidas (seeds 0..99) com `Game.styles` de Leste, Norte e Oeste naquele estilo: `cpu_view_of(g, s).style == g->styles[s]`, e em cada vez de CPU, embaralhar as peças das mãos dos outros 3 assentos e as de fora (mantendo as quantidades) não muda o índice nem a ponta escolhidos por `cpu_choose` (AC 8, door 1)
 Proof: `ctest --test-dir build -R "^styles_decide_from_view_only$" --output-on-failure`
 
 ### S2 - O jogador escolhe o parceiro na tela inicial · 7 files · ~25 KB · ~6k
 
-- [ ] **C9** - `MENU_PARTNER_LABEL` é `Seu parceiro`; depois de `menu_init`, `partner` vale 2 (Audi), com e sem nome inicial (AC 9)
+- [x] **C9** - `MENU_PARTNER_LABEL` é `Seu parceiro`; depois de `menu_init`, `partner` vale 2 (Audi), com e sem nome inicial (AC 9)
 Proof: `ctest --test-dir build -R "^menu_partner_default_audi$" --output-on-failure`
 
-- [ ] **C10** - Clicar no centro de `menu_card_rect(i)` deixa `partner == i` e devolve `MENU_NONE`, para i = 0..5 e na ordem 5, 0, 3; clicar fora dos cartões (no título e em (20, 700)) não muda `partner` (AC 10)
+- [x] **C10** - Clicar no centro de `menu_card_rect(i)` deixa `partner == i` e devolve `MENU_NONE`, para i = 0..5 e na ordem 5, 0, 3; clicar fora dos cartões (no título e em (20, 700)) não muda `partner` (AC 10)
 Proof: `ctest --test-dir build -R "^menu_card_click_selects$" --output-on-failure`
+> Nota do build: a seleção ficou em `menu_pick_partner(Menu *, x, y)`, chamada pela `app_run` antes de `menu_click`; `menu_click` continua com `const Menu *` porque `tests/test_menu.c` (que não muda, AC 17) passa um ponteiro `const`. O teste afirma as duas coisas: o cartão seleciona e `menu_click` devolve `MENU_NONE`.
 
-- [ ] **C11** - `menu_play_rect()` é {540, 360, 200, 55} e `menu_quit_rect()` é {540, 440, 200, 55}; título, rótulo do nome, campo, rótulo do parceiro, os 6 cartões, `Jogar` e `Sair` ficam dentro da janela, nessa ordem de cima para baixo (os 6 cartões numa faixa só, cada um abaixo do rótulo do parceiro e acima de `Jogar`) e nenhum par desses 12 retângulos se sobrepõe (AC 11)
+- [x] **C11** - `menu_play_rect()` é {540, 360, 200, 55} e `menu_quit_rect()` é {540, 440, 200, 55}; título, rótulo do nome, campo, rótulo do parceiro, os 6 cartões, `Jogar` e `Sair` ficam dentro da janela, nessa ordem de cima para baixo (os 6 cartões numa faixa só, cada um abaixo do rótulo do parceiro e acima de `Jogar`) e nenhum par desses 12 retângulos se sobrepõe (AC 11)
 Proof: `ctest --test-dir build -R "^menu_partner_layout$" --output-on-failure`
 
-- [ ] **C12** - `ctl_set_bots(c, p, seed)` para p = 0..5 e seeds 0..99: o Norte recebe o bot p, Leste e Oeste recebem bots diferentes entre si e de p, e `game.styles` de cada assento é o estilo do bot dele; a mesma seed dá os mesmos adversários; as mãos distribuídas são iguais às de `ctl_init` sem bots com a mesma seed; e, para cada p, cada um dos outros 5 bots aparece como adversário em alguma seed. Na `app_run`, com o parceiro trocado para Seu Paulo antes do `MENU_PLAY`, a partida começa com Seu Paulo no Norte e dois adversários diferentes dele e entre si, e duas execuções com a mesma seed dão os mesmos adversários (AC 12)
+- [x] **C12** - `ctl_set_bots(c, p, seed)` para p = 0..5 e seeds 0..99: o Norte recebe o bot p, Leste e Oeste recebem bots diferentes entre si e de p, e `game.styles` de cada assento é o estilo do bot dele; a mesma seed dá os mesmos adversários; as mãos distribuídas são iguais às de `ctl_init` sem bots com a mesma seed; e, para cada p, cada um dos outros 5 bots aparece como adversário em alguma seed. Na `app_run`, com o parceiro trocado para Seu Paulo antes do `MENU_PLAY`, a partida começa com Seu Paulo no Norte e dois adversários diferentes dele e entre si, e duas execuções com a mesma seed dão os mesmos adversários (AC 12)
 Proof: `ctest --test-dir build -R "^bots_seating_by_seed$" --output-on-failure`
 Proof: `ctest --test-dir build -R "^app_menu_partner_starts_game$" --output-on-failure`
 
-- [ ] **C13** - Com bots e a partida em `PHASE_MATCH_OVER`, o clique no centro de `Nova partida` mantém o bot do Norte, deixa Leste e Oeste diferentes entre si e do Norte, com `game.styles` de acordo; em 20 cliques seguidos aparecem pelo menos 2 pares de adversários diferentes (AC 13)
+- [x] **C13** - Com bots e a partida em `PHASE_MATCH_OVER`, o clique no centro de `Nova partida` mantém o bot do Norte, deixa Leste e Oeste diferentes entre si e do Norte, com `game.styles` de acordo; em 20 cliques seguidos aparecem pelo menos 2 pares de adversários diferentes (AC 13)
 Proof: `ctest --test-dir build -R "^new_match_keeps_partner_redraws$" --output-on-failure`
 
 ### S3 - Os nomes aparecem na mesa · 5 files · ~25 KB · ~6k
 
-- [ ] **C14** - Com bots, a `View` traz em `seat_name` o nome do bot de Norte, Leste e Oeste e vazio no Sul; `layout_bot_name(s)` para Norte, Leste e Oeste fica dentro da janela, não se sobrepõe à fileira de nenhum assento com 1 a 6 peças, à área da mesa, ao retângulo do placar {0, 0, 300, 50}, às peças de fora, à mensagem nem aos outros dois rótulos; o do Norte fica acima da fileira do Norte (y + h <= 40) e centrado em x = 640, e os de Leste e Oeste ficam acima da coluna de 6 peças e centrados nela (AC 14)
+- [x] **C14** - Com bots, a `View` traz em `seat_name` o nome do bot de Norte, Leste e Oeste e vazio no Sul; `layout_bot_name(s)` para Norte, Leste e Oeste fica dentro da janela, não se sobrepõe à fileira de nenhum assento com 1 a 6 peças, à área da mesa, ao retângulo do placar {0, 0, 300, 50}, às peças de fora, à mensagem nem aos outros dois rótulos; o do Norte fica acima da fileira do Norte (y + h <= 40) e centrado em x = 640, e os de Leste e Oeste ficam acima da coluna de 6 peças e centrados nela (AC 14)
 Proof: `ctest --test-dir build -R "^bot_names_on_table$" --output-on-failure`
 
-- [ ] **C15** - Com bots e Seu Leo no Leste sem jogada, depois de 800 ms na vez dele a mensagem visível é `Seu Leo passou`; continua visível 1499 ms depois e some aos 1500 ms (AC 15)
+- [x] **C15** - Com bots e Seu Leo no Leste sem jogada, depois de 800 ms na vez dele a mensagem visível é `Seu Leo passou`; continua visível 1499 ms depois e some aos 1500 ms (AC 15)
 Proof: `ctest --test-dir build -R "^bot_pass_message$" --output-on-failure`
 
-- [ ] **C16** - Sem `ctl_set_bots`, os passes de Leste, Norte e Oeste mostram `Leste passou`, `Parceiro passou` e `Oeste passou`, e `seat_name` dos 4 assentos é vazio (AC 16)
+- [x] **C16** - Sem `ctl_set_bots`, os passes de Leste, Norte e Oeste mostram `Leste passou`, `Parceiro passou` e `Oeste passou`, e `seat_name` dos 4 assentos é vazio (AC 16)
 Proof: `ctest --test-dir build -R "^no_bots_keeps_messages$" --output-on-failure`
 
 ### S4 - O resto continua igual · 2 files · ~10 KB · ~3k
 
-- [ ] **C17** - A suíte inteira passa, e nenhum arquivo de teste existente mudou desde `v1.0.0` (AC 17)
+- [x] **C17** - A suíte inteira passa, e nenhum arquivo de teste existente mudou desde `v1.0.0` (AC 17)
 Proof: `ctest --test-dir build --output-on-failure`
 Proof: `git diff --exit-code v1.0.0 -- tests/test_core.c tests/test_parceria.c tests/test_carroca.c tests/test_fora.c tests/test_menu.c tests/test_menu_app.c tests/test_menu_cli.c tests/test_window.c tests/test_app_anim.c tests/test_process.c tests/harness.h tests/fixtures.h tests/core_has_no_raylib.cmake`
 
@@ -143,3 +144,7 @@ Cost: 17 checks, 19 provas em 2 executáveis de teste novos.
   (13 KB), `menu.c`/`.h` (4 KB), `layout.c`/`.h` (7 KB), `app.c` (4 KB), `draw.c` (8 KB),
   `CMakeLists.txt` (7 KB), testes novos (~25 KB), artefatos (~25 KB). Total ~103 KB / 4 = ~26k, abaixo
   do orçamento de 150k - one builder
+
+- **Boundary:** C1-C17 fechados no commit `feat(bots)` deste branch; suíte 114/114, sem avisos de compilação
+- **Settled mid-build:** nome do Norte acima da fileira, não abaixo (resposta do usuário; premissa do plano atualizada)
+- **Abandoned:** `menu_click(Menu *)` selecionando o cartão - gerava aviso `discards const` em `tests/test_menu.c`

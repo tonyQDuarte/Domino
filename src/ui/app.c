@@ -69,6 +69,7 @@ int app_run(const AppOptions *opt)
                     action = menu_enter(&menu);
                 if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
                     Vector2 m = GetMousePosition();
+                    menu_pick_partner(&menu, m.x, m.y);
                     MenuAction clicked = menu_click(&menu, m.x, m.y);
                     if (clicked != MENU_NONE)
                         action = clicked;
@@ -83,6 +84,7 @@ int app_run(const AppOptions *opt)
                     name_save(opt->name_path, name); /* se falhar, joga mesmo assim */
                 ctl_init(&c, opt->seed);
                 ctl_set_player_name(&c, name);
+                ctl_set_bots(&c, menu.partner, opt->seed);
                 ctl_set_animations(&c, true);
                 in_menu = false;
                 just_started = true;

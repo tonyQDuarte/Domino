@@ -30,6 +30,8 @@ typedef struct {
     RectF slide_from;
     int slide_index;
     char player_name[48]; /* vazio quando a partida começou sem a tela inicial */
+    int bot[SEAT_COUNT];  /* índice em BOTS de cada assento, ou -1 sem bots */
+    uint64_t bot_rng;     /* sorteio dos adversários, separado do RNG da distribuição */
 } Controller;
 
 /* Peça em voo, no retângulo do momento. */
@@ -65,6 +67,7 @@ typedef struct {
     int sleeping_shown; /* peças de fora já no canto */
     bool sleeping_face_up;
     char player_name[48];
+    char seat_name[SEAT_COUNT][24]; /* nome do bot de cada assento, vazio sem bots */
 } View;
 
 void ctl_init(Controller *c, uint64_t seed);
@@ -74,5 +77,8 @@ void ctl_update(Controller *c, double dt_ms);
 void ctl_view(const Controller *c, View *v);
 void ctl_set_animations(Controller *c, bool on);
 void ctl_set_player_name(Controller *c, const char *name);
+/* Põe o bot `partner` (índice em BOTS) no Norte e sorteia dois adversários diferentes entre os
+   outros 5 para Leste e Oeste. A mesma seed dá os mesmos adversários. */
+void ctl_set_bots(Controller *c, int partner, uint64_t seed);
 
 #endif

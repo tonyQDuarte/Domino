@@ -20,6 +20,16 @@ typedef enum { TEAM_US, TEAM_THEM } Team; /* Sul+Norte, Leste+Oeste */
 
 typedef enum { END_LEFT, END_RIGHT } End;
 
+/* Estilo de jogo de uma CPU (bots-parceiros). O zero é o estilo atual (Audi). */
+typedef enum {
+    STYLE_AUDI = 0,
+    STYLE_SEU_PAULO,
+    STYLE_NECA,
+    STYLE_SEU_LEO,
+    STYLE_GUEDE,
+    STYLE_MANEZINHO
+} CpuStyle;
+
 typedef enum { PHASE_PLAYING, PHASE_HAND_OVER, PHASE_MATCH_OVER } Phase;
 
 typedef enum {
@@ -65,6 +75,7 @@ typedef struct {
     bool lacks[SEAT_COUNT][7]; /* valores em que cada assento já passou nesta mão */
     Tile sleeping[SLEEPING_COUNT]; /* peças de fora desta mão */
     uint8_t opening_double;        /* primeira mão: valor da maior carroça distribuída */
+    CpuStyle styles[SEAT_COUNT];   /* estilo de cada assento; zero = Audi */
 } Game;
 
 bool tile_is_double(Tile t);
@@ -100,6 +111,7 @@ typedef struct {
     bool empty;
     uint8_t left, right;
     bool first_hand;
+    CpuStyle style;
 } CpuView;
 
 CpuView cpu_view_of(const Game *g, Seat s);

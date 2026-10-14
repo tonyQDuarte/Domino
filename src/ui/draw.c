@@ -1,3 +1,4 @@
+#include "bots.h"
 #include "draw.h"
 
 #define IVORY CLITERAL(Color){245, 240, 225, 255}
@@ -173,6 +174,11 @@ void draw_frame(const Controller *c, Font font)
         RectF nr = layout_player_name();
         text_centered(font, v.player_name, nr.x + nr.w / 2, nr.y + 2, 22, (Color){230, 230, 200, 255});
     }
+    for (int s = 0; s < SEAT_COUNT; s++)
+        if (v.seat_name[s][0]) {
+            RectF br = layout_bot_name((Seat)s);
+            text_centered(font, v.seat_name[s], br.x + br.w / 2, br.y + 2, 22, (Color){230, 230, 200, 255});
+        }
     for (int i = 0; i < v.flying_count; i++) {
         const Flying *f = &v.flying[i];
         if (f->face_up)
@@ -203,6 +209,17 @@ void draw_menu(const Menu *m, Font font, bool cursor_on)
     text(font, m->name, fr.x + 12, fr.y + 10, 30, (Color){30, 30, 30, 255});
     if (cursor_on)
         DrawRectangle((int)(fr.x + 14 + size.x), (int)fr.y + 10, 2, 30, (Color){30, 30, 30, 255});
+    RectF pl = menu_partner_label_rect();
+    text(font, MENU_PARTNER_LABEL, pl.x, pl.y, 24, RAYWHITE);
+    for (int i = 0; i < BOT_COUNT; i++) {
+        RectF r = menu_card_rect(i);
+        bool sel = i == m->partner;
+        DrawRectangleRounded(rl(r), 0.15f, 8, sel ? (Color){40, 140, 70, 255} : Fade(BLACK, 0.3f));
+        if (sel)
+            DrawRectangleRoundedLinesEx(rl(r), 0.15f, 8, 3, GOLD);
+        text_centered(font, BOTS[i].name, r.x + r.w / 2, r.y + 14, 28, RAYWHITE);
+        text_centered(font, BOTS[i].style_text, r.x + r.w / 2, r.y + 50, 20, (Color){220, 220, 200, 255});
+    }
     button(font, menu_play_rect(), MENU_PLAY_TEXT, menu_play_enabled(m));
     button(font, menu_quit_rect(), MENU_QUIT_TEXT, true);
 }

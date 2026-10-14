@@ -143,6 +143,16 @@ RectF layout_player_name(void) { return (RectF){540, 572, 200, 28}; }
 
 RectF layout_message(void) { return (RectF){390, 528, 500, 30}; }
 
+RectF layout_bot_name(Seat s)
+{
+    switch (s) {
+    case SEAT_NORTH: return (RectF){540, 8, 200, 28};
+    case SEAT_WEST: return (RectF){10, 196, 120, 28};
+    case SEAT_EAST: return (RectF){SCREEN_W - 130, 196, 120, 28};
+    default: return (RectF){0, 0, 0, 0};
+    }
+}
+
 void layout_sleeping(RectF out[SLEEPING_COUNT])
 {
     const float w = 30, h = 60, gap = 6;

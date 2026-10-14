@@ -33,5 +33,7 @@ void layout_sleeping(RectF out[SLEEPING_COUNT]);
 RectF layout_player_name(void);
 /* Faixa das mensagens temporárias (`Você passou`, `Jogada inválida`). */
 RectF layout_message(void);
+/* Rótulo com o nome do bot: Norte acima da fileira; Leste e Oeste acima da coluna. */
+RectF layout_bot_name(Seat s);
 
 #endif

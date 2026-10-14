@@ -16,7 +16,8 @@ add_library(domino_core STATIC
   src/core/controller.c
   src/core/cli.c
   src/core/menu.c
-  src/core/namefile.c)
+  src/core/namefile.c
+  src/core/bots.c)
 target_include_directories(domino_core PUBLIC src/core)
 target_link_libraries(domino_core PUBLIC m)
 
@@ -153,3 +154,24 @@ set_tests_properties(cli_menu_types_and_saves PROPERTIES LABELS tela-inicial)
 add_test(NAME cli_menu_backspace_and_clicks COMMAND test_menu_cli cli_menu_backspace_and_clicks $<TARGET_FILE:domino>
   WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
 set_tests_properties(cli_menu_backspace_and_clicks PROPERTIES LABELS tela-inicial)
+
+# bots-parceiros
+add_executable(test_bots tests/test_bots.c)
+target_link_libraries(test_bots PRIVATE domino_core)
+
+foreach(t
+    bots_table style_seu_paulo_always_partner style_neca_partner_when_not_more
+    style_audi_is_current_rule style_seu_leo_blocks_first style_guede_never_partner
+    style_manezinho_tiebreak_only styles_decide_from_view_only
+    menu_partner_default_audi menu_card_click_selects menu_partner_layout
+    bots_seating_by_seed new_match_keeps_partner_redraws
+    bot_names_on_table bot_pass_message no_bots_keeps_messages)
+  add_test(NAME ${t} COMMAND test_bots ${t})
+  set_tests_properties(${t} PROPERTIES LABELS bots-parceiros)
+endforeach()
+
+add_executable(test_bots_app tests/test_bots_app.c)
+target_link_libraries(test_bots_app PRIVATE domino_app)
+add_test(NAME app_menu_partner_starts_game COMMAND test_bots_app app_menu_partner_starts_game
+  WORKING_DIRECTORY $<TARGET_FILE_DIR:domino>)
+set_tests_properties(app_menu_partner_starts_game PROPERTIES LABELS bots-parceiros)

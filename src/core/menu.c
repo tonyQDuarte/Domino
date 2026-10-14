@@ -1,10 +1,12 @@
 #include <string.h>
 
+#include "bots.h"
 #include "menu.h"
 
 void menu_init(Menu *m, const char *initial)
 {
     memset(m, 0, sizeof *m);
+    m->partner = BOT_DEFAULT;
     if (!initial)
         return;
     /* `initial` vem de name_load: já está validado e tem no máximo 16 caracteres */
@@ -69,6 +71,16 @@ void menu_trimmed_name(const Menu *m, char out[NAME_BUF])
     out[len] = '\0';
 }
 
+bool menu_pick_partner(Menu *m, float x, float y)
+{
+    for (int i = 0; i < BOT_COUNT; i++)
+        if (rect_contains(menu_card_rect(i), x, y)) {
+            m->partner = i;
+            return true;
+        }
+    return false;
+}
+
 MenuAction menu_click(const Menu *m, float x, float y)
 {
     if (rect_contains(menu_quit_rect(), x, y))
@@ -80,8 +92,17 @@ MenuAction menu_click(const Menu *m, float x, float y)
 
 MenuAction menu_enter(const Menu *m) { return menu_play_enabled(m) ? MENU_PLAY : MENU_NONE; }
 
-RectF menu_title_rect(void) { return (RectF){440, 140, 400, 70}; }
-RectF menu_label_rect(void) { return (RectF){490, 240, 300, 30}; }
-RectF menu_field_rect(void) { return (RectF){490, 275, 300, 50}; }
+RectF menu_title_rect(void) { return (RectF){440, 30, 400, 70}; }
+RectF menu_label_rect(void) { return (RectF){490, 112, 300, 30}; }
+RectF menu_field_rect(void) { return (RectF){490, 147, 300, 50}; }
+RectF menu_partner_label_rect(void) { return (RectF){70, 214, 300, 30}; }
+
+RectF menu_card_rect(int i)
+{
+    const float w = 180, gap = 12;
+    float x0 = SCREEN_W / 2.0f - (BOT_COUNT * (w + gap) - gap) / 2;
+    return (RectF){x0 + i * (w + gap), 250, w, 85};
+}
+
 RectF menu_play_rect(void) { return (RectF){540, 360, 200, 55}; }
 RectF menu_quit_rect(void) { return (RectF){540, 440, 200, 55}; }

@@ -23,6 +23,7 @@ CpuView cpu_view_of(const Game *g, Seat s)
         v.right = g->board.line[g->board.count - 1].right;
     }
     v.first_hand = g->first_hand;
+    v.style = g->styles[s];
     return v;
 }
 
@@ -95,12 +96,25 @@ bool cpu_decide(const CpuView *v, int *index, End *end)
 
     Seat partner = (Seat)((v->seat + 2) % SEAT_COUNT);
     Seat next = next_seat(v->seat);
-    bool partner_mode = v->counts[partner] < v->own.count;
+    bool partner_mode;
+    switch (v->style) {
+    case STYLE_SEU_PAULO: partner_mode = true; break;
+    case STYLE_NECA: partner_mode = v->counts[partner] <= v->own.count; break;
+    case STYLE_GUEDE:
+    case STYLE_MANEZINHO: partner_mode = false; break;
+    default: partner_mode = v->counts[partner] < v->own.count; break; /* Audi, Seu Leo */
+    }
 
-    if (partner_mode)
+    if (v->style == STYLE_MANEZINHO) {
+        /* só o desempate */
+    } else if (partner_mode && v->style == STYLE_SEU_LEO) {
+        n = filter(m, n, forces_pass, v, next);
         n = filter(m, n, not_blocking, v, partner);
-    n = filter(m, n, forces_pass, v, next);
-    if (!partner_mode) {
+    } else if (partner_mode) {
+        n = filter(m, n, not_blocking, v, partner);
+        n = filter(m, n, forces_pass, v, next);
+    } else {
+        n = filter(m, n, forces_pass, v, next);
         int best = -1, k = 0;
         for (int i = 0; i < n; i++)
             if (own_fits_after(v, &m[i]) > best)

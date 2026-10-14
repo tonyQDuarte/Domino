@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 
+#include "bots.h"
 #include "controller.h"
 
 #ifndef M_PI
@@ -34,6 +35,39 @@ void ctl_init(Controller *c, uint64_t seed)
 {
     memset(c, 0, sizeof *c);
     game_new_match(&c->game, seed);
+    for (int s = 0; s < SEAT_COUNT; s++)
+        c->bot[s] = -1;
+}
+
+/* splitmix64: RNG dos adversários, independente do RNG da distribuição */
+static uint64_t bot_next(uint64_t *state)
+{
+    uint64_t z = (*state += 0x9E3779B97F4A7C15ULL);
+    z = (z ^ (z >> 30)) * 0xBF58476D1CE4E5B9ULL;
+    z = (z ^ (z >> 27)) * 0x94D049BB133111EBULL;
+    return z ^ (z >> 31);
+}
+
+/* Sorteia Leste e Oeste entre os bots que não são o do Norte. */
+static void draw_opponents(Controller *c)
+{
+    int pool[BOT_COUNT - 1], n = 0;
+    for (int i = 0; i < BOT_COUNT; i++)
+        if (i != c->bot[SEAT_NORTH])
+            pool[n++] = i;
+    int e = (int)(bot_next(&c->bot_rng) % (uint64_t)n);
+    c->bot[SEAT_EAST] = pool[e];
+    pool[e] = pool[--n];
+    c->bot[SEAT_WEST] = pool[bot_next(&c->bot_rng) % (uint64_t)n];
+    for (int s = SEAT_EAST; s < SEAT_COUNT; s++)
+        c->game.styles[s] = BOTS[c->bot[s]].style;
+}
+
+void ctl_set_bots(Controller *c, int partner, uint64_t seed)
+{
+    c->bot_rng = seed;
+    c->bot[SEAT_NORTH] = partner;
+    draw_opponents(c);
 }
 
 void ctl_set_animations(Controller *c, bool on)
@@ -96,7 +130,13 @@ static void pass(Controller *c)
 {
     Seat s = c->game.turn;
     game_pass(&c->game);
-    say(c, pass_message(s));
+    if (c->bot[s] >= 0) {
+        char text[48];
+        snprintf(text, sizeof text, "%s passou", BOTS[c->bot[s]].name);
+        say(c, text);
+    } else {
+        say(c, pass_message(s));
+    }
     after_action(c);
     if (c->animate && c->game.phase != PHASE_PLAYING)
         start_anim(c, ANIM_REVEAL);
@@ -117,6 +157,8 @@ void ctl_click(Controller *c, float x, float y)
     if (g->phase == PHASE_MATCH_OVER) {
         if (rect_contains(layout_new_match_button(), x, y)) {
             game_restart_match(g);
+            if (c->bot[SEAT_NORTH] >= 0)
+                draw_opponents(c);
             new_hand_started(c);
         }
         return;
@@ -315,6 +357,9 @@ void ctl_view(const Controller *c, View *v)
     v->sleeping_shown = SLEEPING_COUNT;
     v->sleeping_face_up = g->phase != PHASE_PLAYING && !hidden_reveal;
     snprintf(v->player_name, sizeof v->player_name, "%s", c->player_name);
+    for (int s = 0; s < SEAT_COUNT; s++)
+        if (s != SEAT_SOUTH && c->bot[s] >= 0)
+            snprintf(v->seat_name[s], sizeof v->seat_name[s], "%s", BOTS[c->bot[s]].name);
     if (g->phase == PHASE_PLAYING && c->choosing)
         v->highlight_end[END_LEFT] = v->highlight_end[END_RIGHT] = true;
     if (g->phase != PHASE_PLAYING) {
