@@ -90,6 +90,12 @@ MenuAction menu_click(const Menu *m, float x, float y)
     return MENU_NONE;
 }
 
+MenuAction menu_press(Menu *m, float x, float y)
+{
+    menu_pick_partner(m, x, y);
+    return menu_click(m, x, y);
+}
+
 MenuAction menu_enter(const Menu *m) { return menu_play_enabled(m) ? MENU_PLAY : MENU_NONE; }
 
 RectF menu_title_rect(void) { return (RectF){440, 30, 400, 70}; }

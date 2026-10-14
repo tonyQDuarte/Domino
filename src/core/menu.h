@@ -38,6 +38,8 @@ void menu_trimmed_name(const Menu *m, char out[NAME_BUF]);
 MenuAction menu_click(const Menu *m, float x, float y);
 /* Clique num cartão escolhe esse bot como parceiro. Retorna false fora dos cartões. */
 bool menu_pick_partner(Menu *m, float x, float y);
+/* Clique do mouse na tela inicial: escolhe o cartão, se for um, e devolve a ação do clique. */
+MenuAction menu_press(Menu *m, float x, float y);
 MenuAction menu_enter(const Menu *m);
 
 RectF menu_title_rect(void);

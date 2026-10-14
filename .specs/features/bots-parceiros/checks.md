@@ -57,6 +57,7 @@ Proof: `ctest --test-dir build -R "^menu_partner_default_audi$" --output-on-fail
 - [x] **C10** - Clicar no centro de `menu_card_rect(i)` deixa `partner == i` e devolve `MENU_NONE`, para i = 0..5 e na ordem 5, 0, 3; clicar fora dos cartões (no título e em (20, 700)) não muda `partner` (AC 10)
 Proof: `ctest --test-dir build -R "^menu_card_click_selects$" --output-on-failure`
 > Nota do build: a seleção ficou em `menu_pick_partner(Menu *, x, y)`, chamada pela `app_run` antes de `menu_click`; `menu_click` continua com `const Menu *` porque `tests/test_menu.c` (que não muda, AC 17) passa um ponteiro `const`. O teste afirma as duas coisas: o cartão seleciona e `menu_click` devolve `MENU_NONE`.
+> Reforço da rodada 1 do Verifier (F1): o clique de mouse da `app_run` agora passa por um ponto só, `menu_press` (escolhe o cartão e devolve a ação de `menu_click`). O mesmo teste afirma que `menu_press` no cartão i deixa `partner == i` e devolve `MENU_NONE`, fora dos cartões não muda nada, e no centro de `Jogar` devolve `MENU_PLAY`; o clique real em `Jogar` de `cli_menu_backspace_and_clicks` prova que a `app_run` chama `menu_press`.
 
 - [x] **C11** - `menu_play_rect()` é {540, 360, 200, 55} e `menu_quit_rect()` é {540, 440, 200, 55}; título, rótulo do nome, campo, rótulo do parceiro, os 6 cartões, `Jogar` e `Sair` ficam dentro da janela, nessa ordem de cima para baixo (os 6 cartões numa faixa só, cada um abaixo do rótulo do parceiro e acima de `Jogar`) e nenhum par desses 12 retângulos se sobrepõe (AC 11)
 Proof: `ctest --test-dir build -R "^menu_partner_layout$" --output-on-failure`
@@ -64,6 +65,7 @@ Proof: `ctest --test-dir build -R "^menu_partner_layout$" --output-on-failure`
 - [x] **C12** - `ctl_set_bots(c, p, seed)` para p = 0..5 e seeds 0..99: o Norte recebe o bot p, Leste e Oeste recebem bots diferentes entre si e de p, e `game.styles` de cada assento é o estilo do bot dele; a mesma seed dá os mesmos adversários; as mãos distribuídas são iguais às de `ctl_init` sem bots com a mesma seed; e, para cada p, cada um dos outros 5 bots aparece como adversário em alguma seed. Na `app_run`, com o parceiro trocado para Seu Paulo antes do `MENU_PLAY`, a partida começa com Seu Paulo no Norte e dois adversários diferentes dele e entre si, e duas execuções com a mesma seed dão os mesmos adversários (AC 12)
 Proof: `ctest --test-dir build -R "^bots_seating_by_seed$" --output-on-failure`
 Proof: `ctest --test-dir build -R "^app_menu_partner_starts_game$" --output-on-failure`
+> Reforço da rodada 1 do Verifier (F2): "as mãos distribuídas" agora é a primeira mão **e** a mão seguinte (`game_next_hand`), com e sem bots, mesma seed: as duas iguais, o que prova que o sorteio não gasta o RNG da distribuição.
 
 - [x] **C13** - Com bots e a partida em `PHASE_MATCH_OVER`, o clique no centro de `Nova partida` mantém o bot do Norte, deixa Leste e Oeste diferentes entre si e do Norte, com `game.styles` de acordo; em 20 cliques seguidos aparecem pelo menos 2 pares de adversários diferentes (AC 13)
 Proof: `ctest --test-dir build -R "^new_match_keeps_partner_redraws$" --output-on-failure`
@@ -103,8 +105,10 @@ Proof: `git diff --exit-code v1.0.0 -- tests/test_core.c tests/test_parceria.c t
 | `Landing` doors (1) | door 1 C4, C8 | - |
 | startup config: bots (2 assemblies) | `app_run` com o menu C12 · `ctl_set_bots` direto nos testes C12, C13, C15 | - |
 
-- O C12 prova a `app_run` pelo gancho `menu_input`; o clique de mouse de verdade passa pela mesma
-  `menu_click`, que já é chamada pela `domino.exe` e exercitada por `cli_menu_backspace_and_clicks`
+- O C12 prova a `app_run` pelo gancho `menu_input`. O clique de mouse de verdade passa por `menu_press`
+  (cartão e botões juntos), provada no próprio nível pelo C10 e ligada à `domino.exe` pelo clique real em
+  `Jogar` de `cli_menu_backspace_and_clicks`. (Rodada 1 dizia "a mesma `menu_click`", o que era falso
+  depois da nota do C10 e escondeu a lacuna F1.)
 - O C15 prova o texto com bot em um assento; os outros dois usam o mesmo caminho (`seat_name` do assento)
 
 ## Test policy

@@ -69,8 +69,7 @@ int app_run(const AppOptions *opt)
                     action = menu_enter(&menu);
                 if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
                     Vector2 m = GetMousePosition();
-                    menu_pick_partner(&menu, m.x, m.y);
-                    MenuAction clicked = menu_click(&menu, m.x, m.y);
+                    MenuAction clicked = menu_press(&menu, m.x, m.y);
                     if (clicked != MENU_NONE)
                         action = clicked;
                 }

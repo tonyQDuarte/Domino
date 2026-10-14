@@ -22,7 +22,7 @@ static MenuAction input(int frame, Menu *m, void *user)
         for (const char *p = "Ana"; *p; p++)
             menu_type(m, (unsigned char)*p);
         RectF r = menu_card_rect(0);
-        menu_pick_partner(m, r.x + r.w / 2, r.y + r.h / 2);
+        menu_press(m, r.x + r.w / 2, r.y + r.h / 2);
     }
     return frame == 1 ? MENU_PLAY : MENU_NONE;
 }

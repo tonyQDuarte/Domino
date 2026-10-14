@@ -263,6 +263,11 @@ static int menu_card_click_selects(void)
         CHECK(m.partner == i);
         CHECK(menu_pick_partner(&m, cx(r), cy(r))); /* de novo: continua selecionado */
         CHECK(m.partner == i);
+        /* menu_press (o clique de mouse da app_run) também escolhe o cartão */
+        Menu p;
+        menu_init(&p, "Ana");
+        CHECK(menu_press(&p, cx(r), cy(r)) == MENU_NONE);
+        CHECK(p.partner == i);
     }
     const int order[] = {5, 0, 3};
     for (int k = 0; k < 3; k++) {
@@ -276,6 +281,11 @@ static int menu_card_click_selects(void)
     CHECK(m.partner == 3);
     CHECK(!menu_pick_partner(&m, 20, 700));
     CHECK(menu_click(&m, 20, 700) == MENU_NONE);
+    CHECK(m.partner == 3);
+    CHECK(menu_press(&m, 20, 700) == MENU_NONE);
+    CHECK(m.partner == 3);
+    RectF play = menu_play_rect();
+    CHECK(menu_press(&m, cx(play), cy(play)) == MENU_PLAY);
     CHECK(m.partner == 3);
     return 0;
 }
@@ -333,6 +343,11 @@ static int bots_seating_by_seed(void)
             ctl_set_bots(&b, p, seed);
             CHECK(a.bot[SEAT_EAST] == b.bot[SEAT_EAST] && a.bot[SEAT_WEST] == b.bot[SEAT_WEST]);
             ctl_init(&plain, seed);
+            CHECK(memcmp(a.game.hands, plain.game.hands, sizeof a.game.hands) == 0);
+            CHECK(memcmp(a.game.sleeping, plain.game.sleeping, sizeof a.game.sleeping) == 0);
+            /* o sorteio não gasta o RNG da distribuição: a mão seguinte também é igual */
+            game_next_hand(&a.game);
+            game_next_hand(&plain.game);
             CHECK(memcmp(a.game.hands, plain.game.hands, sizeof a.game.hands) == 0);
             CHECK(memcmp(a.game.sleeping, plain.game.sleeping, sizeof a.game.sleeping) == 0);
             seen[a.bot[SEAT_EAST]] = seen[a.bot[SEAT_WEST]] = true;
