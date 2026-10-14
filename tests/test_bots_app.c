@@ -67,7 +67,7 @@ static int app_menu_partner_starts_game(void)
 }
 
 /* Sem menu_input: o teclado e o mouse passam pelo caminho real da app_run; o gancho mouse_input
-   só diz onde foi o clique. Quadro 0: cartão de Seu Paulo; quadro 1: Jogar. */
+   só diz se houve clique e onde. Quadro 0: cartão de Seu Paulo; quadro 1: Jogar. */
 static bool mouse(int frame, float *x, float *y, void *user)
 {
     (void)user;

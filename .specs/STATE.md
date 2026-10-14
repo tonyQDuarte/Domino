@@ -11,14 +11,15 @@
 | AD-005 | A CPU decide só por `CpuView` (própria mão, pontas, quantidades, passes); nunca por `Game` | O usuário escolheu CPU sem trapaça; a estrutura garante isso para regras futuras | active | 2026-09-27 |
 | AD-006 | Animações vivem na linha do tempo do controlador em `domino_core`, desligadas no `ctl_init` e ligadas pela `app_run` | Testáveis sem janela, e os testes de regra continuam sem animação | active | 2026-09-27 |
 | AD-007 | Dados do jogador ficam em `%APPDATA%Domino`, um arquivo de texto UTF-8 por assunto (o nome em `jogador.txt`); o menu e esses arquivos só são ligados pela `domino.exe` | A pasta do usuário sempre aceita escrita; os testes da `app_run` continuam sem tocar o disco do usuário | active | 2026-10-13 |
+| AD-008 | Estilo de jogo da CPU vive no `CpuView` (campo `style`, zero = Audi) e em `Game.styles`; bots e adversários ficam no `Controller`, sorteados com RNG próprio | Mantém a assinatura de `cpu_decide` e os testes antigos; a seed continua dando as mesmas mãos | active | 2026-10-13 |
 
 ## Handoff
 
 **Feature**: bots-parceiros
-**Where**: plan.md escrito, aguardando revisão e escolha do perfil pelo usuário
-**In progress**: nada (nenhum código ainda)
-**Next step**: com o plano aprovado, escrever checks.md, depois testes e código; Verifier; merge no main só com PASS e o ok do usuário
+**Where**: verificada (standard), PASS na rodada 3 do Verifier; aguardando o ok do usuário para o merge no main
+**In progress**: nada
+**Next step**: com o ok do usuário, merge de feat/bots-parceiros no main (o push é feito pelo usuário no terminal dele)
 **Blockers**: nenhum
 **Uncommitted**: nada
 **Branch**: feat/bots-parceiros (saiu do main em v1.0.0, 8419202)
-**Ao continuar num chat novo**: ler .specs/PROJECT.md, depois este arquivo, depois .specs/features/bots-parceiros/plan.md
+**Observação**: `cli_menu_backspace_and_clicks` (de tela-inicial) é instável, cerca de 2 falhas em 11 rodadas; candidato a uma correção separada

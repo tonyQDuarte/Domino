@@ -58,7 +58,7 @@ rodam: as checagens deles são feitas lendo os artefatos.
 | `abertura-carroca` | abertura com carroça e ordem de abertura | verificada (standard), no `main` |
 | `pecas-de-fora` | 6 por jogador, 4 de fora | verificada (standard), no `main` |
 | `tela-inicial` | tela inicial com nome salvo | verificada (standard), no `main`, tag `v1.0.0` |
-| `bots-parceiros` | 6 bots com nome e estilo, escolha do parceiro | **em andamento** no branch `feat/bots-parceiros` |
+| `bots-parceiros` | 6 bots com nome e estilo, escolha do parceiro | verificada (standard), no branch `feat/bots-parceiros`, aguardando merge |
 
 Algumas regras antigas foram substituídas por features novas a pedido do usuário; os `checks.md`
 antigos têm notas `> Substituído por ...` nos pontos afetados, em vez de linhas apagadas.
