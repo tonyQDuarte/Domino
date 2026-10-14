@@ -29,6 +29,7 @@ typedef struct {
     bool reveal_after;  /* virar as mãos quando o deslize terminar */
     RectF slide_from;
     int slide_index;
+    char player_name[48]; /* vazio quando a partida começou sem a tela inicial */
 } Controller;
 
 /* Peça em voo, no retângulo do momento. */
@@ -63,6 +64,7 @@ typedef struct {
     float pulse;        /* opacidade dos destaques */
     int sleeping_shown; /* peças de fora já no canto */
     bool sleeping_face_up;
+    char player_name[48];
 } View;
 
 void ctl_init(Controller *c, uint64_t seed);
@@ -71,5 +73,6 @@ void ctl_enter(Controller *c);
 void ctl_update(Controller *c, double dt_ms);
 void ctl_view(const Controller *c, View *v);
 void ctl_set_animations(Controller *c, bool on);
+void ctl_set_player_name(Controller *c, const char *name);
 
 #endif

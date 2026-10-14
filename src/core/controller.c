@@ -45,6 +45,11 @@ void ctl_set_animations(Controller *c, bool on)
         start_anim(c, ANIM_DEAL);
 }
 
+void ctl_set_player_name(Controller *c, const char *name)
+{
+    snprintf(c->player_name, sizeof c->player_name, "%s", name ? name : "");
+}
+
 static void after_action(Controller *c)
 {
     c->turn_ms = 0;
@@ -309,6 +314,7 @@ void ctl_view(const Controller *c, View *v)
     }
     v->sleeping_shown = SLEEPING_COUNT;
     v->sleeping_face_up = g->phase != PHASE_PLAYING && !hidden_reveal;
+    snprintf(v->player_name, sizeof v->player_name, "%s", c->player_name);
     if (g->phase == PHASE_PLAYING && c->choosing)
         v->highlight_end[END_LEFT] = v->highlight_end[END_RIGHT] = true;
     if (g->phase != PHASE_PLAYING) {

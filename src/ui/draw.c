@@ -165,8 +165,14 @@ void draw_frame(const Controller *c, Font font)
     draw_board(c, &v);
     draw_hands(c, &v);
     text(font, v.score_text, v.score_x, v.score_y, 28, RAYWHITE);
-    if (v.message_visible)
-        text_centered(font, v.message, SCREEN_W / 2.0f, 565, 26, RAYWHITE);
+    if (v.message_visible) {
+        RectF mr = layout_message();
+        text_centered(font, v.message, mr.x + mr.w / 2, mr.y + 2, 26, RAYWHITE);
+    }
+    if (v.player_name[0]) {
+        RectF nr = layout_player_name();
+        text_centered(font, v.player_name, nr.x + nr.w / 2, nr.y + 2, 22, (Color){230, 230, 200, 255});
+    }
     for (int i = 0; i < v.flying_count; i++) {
         const Flying *f = &v.flying[i];
         if (f->face_up)
@@ -176,4 +182,27 @@ void draw_frame(const Controller *c, Font font)
     }
     if (v.overlay_visible)
         draw_overlay(&v, font);
+}
+
+static void button(Font f, RectF r, const char *label, bool enabled)
+{
+    Color bg = enabled ? (Color){40, 140, 70, 255} : (Color){70, 90, 75, 255};
+    Color fg = enabled ? RAYWHITE : (Color){150, 160, 150, 255};
+    DrawRectangleRounded(rl(r), 0.3f, 8, bg);
+    text_centered(f, label, r.x + r.w / 2, r.y + r.h / 2 - 14, 28, fg);
+}
+
+void draw_menu(const Menu *m, Font font, bool cursor_on)
+{
+    ClearBackground(TABLE_COLOR);
+    RectF t = menu_title_rect(), l = menu_label_rect(), fr = menu_field_rect();
+    text_centered(font, MENU_TITLE, t.x + t.w / 2, t.y, 64, GOLD);
+    text(font, MENU_LABEL, l.x, l.y, 24, RAYWHITE);
+    DrawRectangleRounded(rl(fr), 0.2f, 8, (Color){245, 240, 225, 255});
+    Vector2 size = MeasureTextEx(font, m->name, 30, 1);
+    text(font, m->name, fr.x + 12, fr.y + 10, 30, (Color){30, 30, 30, 255});
+    if (cursor_on)
+        DrawRectangle((int)(fr.x + 14 + size.x), (int)fr.y + 10, 2, 30, (Color){30, 30, 30, 255});
+    button(font, menu_play_rect(), MENU_PLAY_TEXT, menu_play_enabled(m));
+    button(font, menu_quit_rect(), MENU_QUIT_TEXT, true);
 }

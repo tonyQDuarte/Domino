@@ -29,5 +29,9 @@ void layout_cpu_row(Seat s, int count, RectF out[HAND_SIZE]);
 RectF layout_new_match_button(void);
 /* Lugar das peças de fora: canto superior direito. */
 void layout_sleeping(RectF out[SLEEPING_COUNT]);
+/* Rótulo com o nome do jogador, acima da mão do Sul. */
+RectF layout_player_name(void);
+/* Faixa das mensagens temporárias (`Você passou`, `Jogada inválida`). */
+RectF layout_message(void);
 
 #endif

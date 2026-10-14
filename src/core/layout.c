@@ -139,6 +139,10 @@ void layout_cpu_row(Seat s, int count, RectF out[HAND_SIZE])
 
 RectF layout_new_match_button(void) { return (RectF){540, 430, 200, 50}; }
 
+RectF layout_player_name(void) { return (RectF){540, 572, 200, 28}; }
+
+RectF layout_message(void) { return (RectF){390, 528, 500, 30}; }
+
 void layout_sleeping(RectF out[SLEEPING_COUNT])
 {
     const float w = 30, h = 60, gap = 6;

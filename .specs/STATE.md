@@ -15,9 +15,9 @@
 ## Handoff
 
 **Feature**: tela-inicial
-**Where**: plan aprovado (standard), checks escritos; construindo
+**Where**: C1-C13 fechados; aguardando o Verifier
 **In progress**: nada
-**Next step**: testes de C1-C13, depois implementação
+**Next step**: Verifier independente (standard)
 **Blockers**: nenhum
 **Uncommitted**: nada
 **Branch**: feat/tela-inicial

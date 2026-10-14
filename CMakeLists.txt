@@ -14,7 +14,9 @@ add_library(domino_core STATIC
   src/core/cpu.c
   src/core/layout.c
   src/core/controller.c
-  src/core/cli.c)
+  src/core/cli.c
+  src/core/menu.c
+  src/core/namefile.c)
 target_include_directories(domino_core PUBLIC src/core)
 target_link_libraries(domino_core PUBLIC m)
 
@@ -121,3 +123,30 @@ foreach(t
   add_test(NAME ${t} COMMAND test_fora ${t})
   set_tests_properties(${t} PROPERTIES LABELS pecas-de-fora)
 endforeach()
+
+# tela-inicial
+add_executable(test_menu tests/test_menu.c)
+target_link_libraries(test_menu PRIVATE domino_core)
+
+foreach(t
+    menu_layout_and_texts menu_type_filter menu_backspace_utf8 menu_play_disabled_when_blank
+    menu_play_trims_name menu_quit_click player_name_above_south_hand
+    name_save_format name_load_prefills name_load_rejects_invalid)
+  add_test(NAME ${t} COMMAND test_menu ${t} WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
+  set_tests_properties(${t} PROPERTIES LABELS tela-inicial)
+endforeach()
+
+add_executable(test_menu_app tests/test_menu_app.c)
+target_link_libraries(test_menu_app PRIVATE domino_app)
+
+foreach(t
+    app_menu_before_game app_menu_play_starts_game app_menu_quit_returns_0
+    app_menu_saves_name app_menu_prefills_name app_menu_save_failure_still_plays)
+  add_test(NAME ${t} COMMAND test_menu_app ${t} WORKING_DIRECTORY $<TARGET_FILE_DIR:domino>)
+  set_tests_properties(${t} PROPERTIES LABELS tela-inicial)
+endforeach()
+
+add_executable(test_menu_cli tests/test_menu_cli.c)
+add_test(NAME cli_menu_types_and_saves COMMAND test_menu_cli cli_menu_types_and_saves $<TARGET_FILE:domino>
+  WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
+set_tests_properties(cli_menu_types_and_saves PROPERTIES LABELS tela-inicial)
