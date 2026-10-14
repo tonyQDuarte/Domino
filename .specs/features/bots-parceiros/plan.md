@@ -134,11 +134,11 @@ Cada bot decide com o seu estilo, sempre só com o que é visível.
 
 | Assumption | Chosen default | Rationale | Confirmed? |
 | --- | --- | --- | --- |
-| Estilo de cada bot | a tabela "Os seis estilos" acima | O usuário deixou a meu critério; cobre do mais colaborativo ao mais egoísta e cada estilo muda pelo menos uma jogada em relação ao vizinho | n |
-| Bot selecionado ao abrir | Audi | É o estilo atual, então quem não mexe joga como antes | n |
-| Sorteio dos adversários | RNG próprio, semeado pela seed da partida, separado do RNG da distribuição | Os adversários mudam sem alterar as mãos que a seed já dá | n |
-| Lugar dos nomes | Norte: abaixo da fileira; Leste e Oeste: acima da coluna | São os espaços livres perto de cada fileira | n |
-| Texto do estilo nos cartões | substantivo neutro (`Colaboração`, não `Colaborativa`) | Não atribui gênero a nenhum bot | n |
+| Estilo de cada bot | a tabela "Os seis estilos" acima | O usuário deixou a meu critério; cobre do mais colaborativo ao mais egoísta e cada estilo muda pelo menos uma jogada em relação ao vizinho | y (2026-10-13) |
+| Bot selecionado ao abrir | Audi | É o estilo atual, então quem não mexe joga como antes | y (2026-10-13) |
+| Sorteio dos adversários | RNG próprio, semeado pela seed da partida, separado do RNG da distribuição | Os adversários mudam sem alterar as mãos que a seed já dá | y (2026-10-13) |
+| Lugar dos nomes | Norte: acima da fileira; Leste e Oeste: acima da coluna | São os espaços livres perto de cada fileira. Abaixo da fileira do Norte sobram só 10 px até a área da mesa, o que quebraria o AC 14 | y (2026-10-13, trocado de "abaixo" para "acima" ao escrever os checks) |
+| Texto do estilo nos cartões | substantivo neutro (`Colaboração`, não `Colaborativa`) | Não atribui gênero a nenhum bot | y (2026-10-13) |
 
 **Open questions:** none - all resolved or logged above.
 
