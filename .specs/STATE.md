@@ -10,13 +10,14 @@
 | AD-004 | Testes são executáveis C puros registrados no CTest | Não traz dependência; `ctest` dá o código de saída que serve de prova | active | 2026-09-27 |
 | AD-005 | A CPU decide só por `CpuView` (própria mão, pontas, quantidades, passes); nunca por `Game` | O usuário escolheu CPU sem trapaça; a estrutura garante isso para regras futuras | active | 2026-09-27 |
 | AD-006 | Animações vivem na linha do tempo do controlador em `domino_core`, desligadas no `ctl_init` e ligadas pela `app_run` | Testáveis sem janela, e os testes de regra continuam sem animação | active | 2026-09-27 |
+| AD-007 | Dados do jogador ficam em `%APPDATA%Domino`, um arquivo de texto UTF-8 por assunto (o nome em `jogador.txt`); o menu e esses arquivos só são ligados pela `domino.exe` | A pasta do usuário sempre aceita escrita; os testes da `app_run` continuam sem tocar o disco do usuário | active | 2026-10-13 |
 
 ## Handoff
 
-**Feature**: pecas-de-fora
-**Where**: C1-C11 fechados; Verifier independente: PASS (standard, 11/11, 5 falhas injetadas e mortas)
+**Feature**: tela-inicial
+**Where**: plan aprovado (standard), checks escritos; construindo
 **In progress**: nada
-**Next step**: o usuário testa o jogo; próxima feature a combinar
+**Next step**: testes de C1-C13, depois implementação
 **Blockers**: nenhum
 **Uncommitted**: nada
-**Branch**: feat/pecas-de-fora
+**Branch**: feat/tela-inicial
