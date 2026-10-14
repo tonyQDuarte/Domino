@@ -20,6 +20,8 @@ typedef struct {
     MenuAction (*menu_input)(int frame, Menu *m, void *user);
     /* testes: chamado uma vez quando a partida começa */
     void (*on_game_start)(const Controller *c, void *user);
+    /* testes: clique do mouse na tela inicial no quadro (true = clicou em *x, *y), no lugar do mouse */
+    bool (*mouse_input)(int frame, float *x, float *y, void *user);
 } AppOptions;
 
 int app_run(const AppOptions *opt);

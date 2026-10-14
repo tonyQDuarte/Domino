@@ -57,7 +57,8 @@ Proof: `ctest --test-dir build -R "^menu_partner_default_audi$" --output-on-fail
 - [x] **C10** - Clicar no centro de `menu_card_rect(i)` deixa `partner == i` e devolve `MENU_NONE`, para i = 0..5 e na ordem 5, 0, 3; clicar fora dos cartões (no título e em (20, 700)) não muda `partner` (AC 10)
 Proof: `ctest --test-dir build -R "^menu_card_click_selects$" --output-on-failure`
 > Nota do build: a seleção ficou em `menu_pick_partner(Menu *, x, y)`, chamada pela `app_run` antes de `menu_click`; `menu_click` continua com `const Menu *` porque `tests/test_menu.c` (que não muda, AC 17) passa um ponteiro `const`. O teste afirma as duas coisas: o cartão seleciona e `menu_click` devolve `MENU_NONE`.
-> Reforço da rodada 1 do Verifier (F1): o clique de mouse da `app_run` agora passa por um ponto só, `menu_press` (escolhe o cartão e devolve a ação de `menu_click`). O mesmo teste afirma que `menu_press` no cartão i deixa `partner == i` e devolve `MENU_NONE`, fora dos cartões não muda nada, e no centro de `Jogar` devolve `MENU_PLAY`; o clique real em `Jogar` de `cli_menu_backspace_and_clicks` prova que a `app_run` chama `menu_press`.
+> Reforço da rodada 1 do Verifier (F1): o clique de mouse da `app_run` agora passa por um ponto só, `menu_press` (escolhe o cartão e devolve a ação de `menu_click`). O mesmo teste afirma que `menu_press` no cartão i deixa `partner == i` e devolve `MENU_NONE`, fora dos cartões não muda nada, e no centro de `Jogar` devolve `MENU_PLAY`; (a frase original desta nota dizia que o clique real em `Jogar` provava que a `app_run` chama `menu_press`; a rodada 2 do Verifier mostrou que não prova, porque `Jogar` não tem cartão embaixo.)
+> Reforço da rodada 2 do Verifier: prova extra pelo caminho real do mouse na `app_run` (`app.c`, sem o gancho `menu_input`; o gancho `mouse_input` só diz onde foi o clique): clicar no cartão de Seu Paulo e depois em `Jogar` começa a partida com Seu Paulo no Norte. `ctest --test-dir build -R "^app_menu_card_click_real_path$" --output-on-failure`
 
 - [x] **C11** - `menu_play_rect()` é {540, 360, 200, 55} e `menu_quit_rect()` é {540, 440, 200, 55}; título, rótulo do nome, campo, rótulo do parceiro, os 6 cartões, `Jogar` e `Sair` ficam dentro da janela, nessa ordem de cima para baixo (os 6 cartões numa faixa só, cada um abaixo do rótulo do parceiro e acima de `Jogar`) e nenhum par desses 12 retângulos se sobrepõe (AC 11)
 Proof: `ctest --test-dir build -R "^menu_partner_layout$" --output-on-failure`
@@ -105,10 +106,11 @@ Proof: `git diff --exit-code v1.0.0 -- tests/test_core.c tests/test_parceria.c t
 | `Landing` doors (1) | door 1 C4, C8 | - |
 | startup config: bots (2 assemblies) | `app_run` com o menu C12 · `ctl_set_bots` direto nos testes C12, C13, C15 | - |
 
-- O C12 prova a `app_run` pelo gancho `menu_input`. O clique de mouse de verdade passa por `menu_press`
-  (cartão e botões juntos), provada no próprio nível pelo C10 e ligada à `domino.exe` pelo clique real em
-  `Jogar` de `cli_menu_backspace_and_clicks`. (Rodada 1 dizia "a mesma `menu_click`", o que era falso
-  depois da nota do C10 e escondeu a lacuna F1.)
+- O C12 prova a `app_run` pelo gancho `menu_input`. O clique de mouse passa por `menu_press`, provada no
+  próprio nível pelo C10, e pelo caminho real da `app_run` em `app_menu_card_click_real_path` (cartão e
+  `Jogar` clicados pelo bloco do mouse de `app.c`). A leitura do botão do mouse pela raylib continua provada
+  só por `cli_menu_backspace_and_clicks` (`Jogar` e `Sair`). (As rodadas 1 e 2 tinham notas aqui que
+  afirmavam provas que não existiam; foram corrigidas.)
 - O C15 prova o texto com bot em um assento; os outros dois usam o mesmo caminho (`seat_name` do assento)
 
 ## Test policy

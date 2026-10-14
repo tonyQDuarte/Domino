@@ -175,3 +175,6 @@ target_link_libraries(test_bots_app PRIVATE domino_app)
 add_test(NAME app_menu_partner_starts_game COMMAND test_bots_app app_menu_partner_starts_game
   WORKING_DIRECTORY $<TARGET_FILE_DIR:domino>)
 set_tests_properties(app_menu_partner_starts_game PROPERTIES LABELS bots-parceiros)
+add_test(NAME app_menu_card_click_real_path COMMAND test_bots_app app_menu_card_click_real_path
+  WORKING_DIRECTORY $<TARGET_FILE_DIR:domino>)
+set_tests_properties(app_menu_card_click_real_path PROPERTIES LABELS bots-parceiros)

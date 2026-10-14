@@ -67,8 +67,10 @@ int app_run(const AppOptions *opt)
                     menu_backspace(&menu);
                 if (IsKeyPressed(KEY_ENTER) || IsKeyPressed(KEY_KP_ENTER))
                     action = menu_enter(&menu);
-                if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
-                    Vector2 m = GetMousePosition();
+                Vector2 m = GetMousePosition();
+                bool pressed = opt->mouse_input ? opt->mouse_input(frame, &m.x, &m.y, opt->user)
+                                                : IsMouseButtonPressed(MOUSE_BUTTON_LEFT);
+                if (pressed) {
                     MenuAction clicked = menu_press(&menu, m.x, m.y);
                     if (clicked != MENU_NONE)
                         action = clicked;
