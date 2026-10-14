@@ -15,9 +15,9 @@
 ## Handoff
 
 **Feature**: tela-inicial
-**Where**: C1-C13 fechados; aguardando o Verifier
+**Where**: C1-C13 fechados; Verifier independente rodada 2: PASS (standard, 13/13, 6 falhas injetadas e mortas)
 **In progress**: nada
-**Next step**: Verifier independente (standard)
+**Next step**: o usuário testa a tela inicial; push do branch quando ele pedir
 **Blockers**: nenhum
 **Uncommitted**: nada
 **Branch**: feat/tela-inicial
